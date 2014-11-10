@@ -8,6 +8,7 @@ package fda;
 import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,7 @@ public class FDA {
 
     //Used for URL validation
     public enum UrlType{FANDOM, FIC, BETA, UNKNOWN}
+    public static final String BASE_URL = "https://www.fanfiction.net";
 
     /* Take String representation of a URL and determine what it is meant to lead to
      *
@@ -27,10 +29,9 @@ public class FDA {
      * @return the corresponding UrlType
      */
     public static UrlType checkUrl(String url) {
-        String baseUrl = "https://www.fanfiction.net/";
-        String ficString = baseUrl + "s/\\d+/\\d+/.+";
-        String betaString = baseUrl + "betareaders/.+";
-        String fandomString = baseUrl + ".+";
+        String ficString = BASE_URL + "/s/\\d+/\\d+/.+";
+        String betaString = BASE_URL + "/betareaders/.+";
+        String fandomString = BASE_URL + "/.+";
 
         //Test whether URL matches the fic pattern
         Pattern storyPattern = Pattern.compile(ficString);
@@ -56,6 +57,11 @@ public class FDA {
     /* Added comment to test pushing to the Git repository */
     public static void main(String[] args) {
         System.out.println("Hello Worlds!");
+        try {
+            Scraper.findFicData("https://www.fanfiction.net/book/Harry-Potter");
+        } catch (IOException e) {
+            System.out.println("Could not connect to fanfiction.net");
+        }
     }
     
 }
