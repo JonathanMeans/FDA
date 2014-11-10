@@ -6,8 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 /*
  * This class is for extracting relevant information from fanfiction.net
@@ -63,6 +62,8 @@ public class Scraper {
 
     private static void extractMisc(Element story, Fanfic fic) {
         String[] properties = story.select("div.z-padtop2.xgray").text().split(" - ");
+        List<String> propertyList = new ArrayList<String>(Arrays.asList(properties));
+        Iterator<String> iterator = propertyList.iterator();
 
         //calculate important numbers
         int ratingLength = "Rated: ".length();
@@ -73,62 +74,65 @@ public class Scraper {
         int followsLength = "Follows: ".length();
 
         //set obvious fields
-        fic.setRating(properties[0].substring(ratingLength));
-        fic.setLanguage(properties[1]);
+        fic.setRating(iterator.next().substring(ratingLength));
+        fic.setLanguage(iterator.next());
 
         //Apparently genre is option
         //This mess handles that
-        if (properties[2].startsWith("Chapters: ")) {
-            String[] newProperties = new String[properties.length + 1];
-            System.arraycopy(properties, 0, newProperties, 0, 2);
-            newProperties[2] = null;
-            fic.setGenres(null);
-            System.arraycopy(properties, 2, newProperties, 3, properties.length - 2);
-            properties = newProperties;
+        String genres = iterator.next();
+        String chapters = null;
+        if (!genres.startsWith("Chapters: ")) {
+            fic.setGenres(genres.split("/"));
+            chapters = iterator.next();
         } else {
-            fic.setGenres(properties[2].split("/"));
+            chapters = genres;
         }
 
         //I think we can assume there won't be anything longer than 999 chapters
-        fic.setChapters(Integer.parseInt(properties[3].substring(chapterLength)));
+        fic.setChapters(Integer.parseInt(chapters.substring(chapterLength)));
 
-        //This requires work to remove the comma
-        String wordCount = removeCommas(properties[4].substring(wordLength));
+        String wordCount = removeCommas(iterator.next().substring(wordLength));
         fic.setWords(Integer.parseInt(wordCount));
 
-        //The fields below need to be checked more carefully
-        if (reviewsLength <= properties[5].length() && properties[5].substring(0, reviewsLength).equals("Reviews: ")) {
-            String reviews = removeCommas(properties[5].substring(reviewsLength));
-            fic.setReviews(Integer.parseInt(reviews));
-        } else if (favsLength <= properties[5].length() && properties[5].substring(0, favsLength).equals("Favs: ")) {
-            String favs = removeCommas(properties[5].substring(favsLength));
-            fic.setFavorites(Integer.parseInt(favs));
-        } else if (followsLength <= properties[5].length() && properties[5].substring(0, followsLength).equals("Follows: ")) {
-            String follows = removeCommas(properties[5].substring(followsLength));
-            fic.setFollows(Integer.parseInt(follows));
+        //Fics may not have favorites, follows, or reviews, which makes this a bit more involved
+        //Iterator -should- be incremented in a way to handle it, though
+        String reviews = iterator.next();
+        String favs = null;
+        String follows = null;
+
+        //We know there is at least a published date left in the properties, so no need to check whether reviews is null
+        if (reviewsLength <= reviews.length() && reviews.substring(0, reviewsLength).equals("Reviews: ")) {
+            String reviewCount = removeCommas(reviews.substring(reviewsLength));
+            fic.setReviews(Integer.parseInt(reviewCount));
+            favs = iterator.next();
+        } else  {
+            favs = reviews;
         }
 
-        if (properties.length > 6) {
-            if (favsLength <= properties[6].length() && properties[6].substring(0, favsLength).equals("Favs: ")) {
-                String favs = removeCommas(properties[6].substring(favsLength));
-                fic.setFavorites(Integer.parseInt(favs));
-            } else if (followsLength <= properties[6].length() && properties[6].substring(0, followsLength).equals("Follows: ")) {
-                String follows = removeCommas(properties[6].substring(followsLength));
-                fic.setFollows(Integer.parseInt(follows));
+        if (favs != null) {
+            if (favsLength <= favs.length() && favs.substring(0, favsLength).equals("Favs: ")) {
+                String favsCount = removeCommas(favs.substring(favsLength));
+                fic.setFavorites(Integer.parseInt(favsCount));
+                follows = iterator.next();
+            } else {
+                follows = favs;
             }
         }
 
-        if (properties.length > 7) {
-            if (followsLength <= properties[7].length() && properties[7].substring(0, followsLength).equals("Follows: ")) {
-                String follows = removeCommas(properties[7].substring(followsLength));
-                fic.setFollows(Integer.parseInt(follows));
+        if (follows != null) {
+            if (followsLength <= follows.length() && follows.substring(0, followsLength).equals("Follows: ")) {
+                String followsCount = removeCommas(follows.substring(followsLength));
+                fic.setFollows(Integer.parseInt(followsCount));
             }
         }
 
+        //If the fic gives the characters, they will either be listed last or second-to-last
         String characterData = properties[properties.length - 1];
         if (characterData.equals("Complete")) {
             characterData = properties[properties.length - 2];
         }
+
+        //This just gets its own method because it's so large
         extractCharactersFromPropertyList(characterData, fic);
     }
 
@@ -139,6 +143,11 @@ public class Scraper {
 
         String[] characterArray = data.split(", ");
         String character = null;
+
+        //If there are pairings, they will always come first
+        //Remove brackets and insert characters and pairings to proper arrays
+        //There's probably a more general way to do this, but with only four possible characters
+        //it's not worth bothering with at the moment
         if (characterArray[0].startsWith("[")) {
             character = characterArray[0].substring(1);
             characters[0] = character;
