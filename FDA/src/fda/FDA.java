@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 public class FDA extends javax.swing.JFrame {
 
-    /** Creates new form Antenna */
+    /** Creates new form FDA */
     public FDA() {
         initComponents();
     }
