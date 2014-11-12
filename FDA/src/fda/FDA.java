@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package FDA;
+package fda;
 
 import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
@@ -293,7 +293,6 @@ public class FDA extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
     public enum UrlType{FANDOM, FIC, BETA, UNKNOWN}
-    public static final String BASE_URL = "https://www.fanfiction.net";
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO Search button:
 
@@ -362,9 +361,9 @@ public class FDA extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
     public UrlType checkUrl(String url) {
-        String ficString = BASE_URL + "/s/\\d+/\\d+/.+";
-        String betaString = BASE_URL + "/betareaders/.+";
-        String fandomString = BASE_URL + "/.+";
+        String ficString = Scraper.BASE_URL + "/s/\\d+/\\d+/.+";
+        String betaString = Scraper.BASE_URL + "/betareaders/.+";
+        String fandomString = Scraper.BASE_URL + "/.+";
         //Test whether URL matches the fic pattern
         Pattern storyPattern = Pattern.compile(ficString);
         Matcher storyMatcher = storyPattern.matcher(url);

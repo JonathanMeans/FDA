@@ -13,54 +13,8 @@ import java.util.*;
  */
 public class Scraper {
 
-    public static Elements findFicData(String url) throws IOException {
-        Document doc = Jsoup.connect(url).get();
-        Elements stories = doc.select("div.z-list.zhover.zpointer");
-
-        if (stories.isEmpty()) {
-            throw new IOException("URL does not lead to a valid page.");
-        }
-
-        for (Element story : stories) {
-            Fanfic fic = extractFicData(story);
-        }
-
-        return stories;
-    }
-
-    private static Fanfic extractFicData(Element story) {
-        Fanfic fic = new Fanfic();
-        extractTitleData(story, fic);
-        extractAuthorData(story, fic);
-        extractSummary(story, fic);
-        extractMisc(story, fic);
-        extractDates(story, fic);
-        return new Fanfic();
-    }
-
-    private static void extractTitleData(Element story, Fanfic fic) {
-        Element titleElement = story.select("a").first();
-        fic.setTitle(titleElement.text());
-        fic.setFicUrl(FDA.BASE_URL + titleElement.attr("href"));
-    }
-
-    private static void extractAuthorData(Element story, Fanfic fic) {
-        Element authorElement = story.select("a + a").first();
-
-        if (authorElement.attr("href").substring(0, 2).equals("/s")) {
-            //multi-chapter fic. Ignore next link
-            authorElement = story.select("a + a + a").first();
-        }
-
-        fic.setAuthor(authorElement.text());
-        fic.setAuthorUrl(FDA.BASE_URL + authorElement.attr("href"));
-    }
-
-    private static void extractSummary(Element story, Fanfic fic) {
-        fic.setSummary(story.select("div.z-indent.z-padtop").text());
-    }
-
-    private static void extractMisc(Element story, Fanfic fic) {
+    public static final String BASE_URL = "https://www.fanfiction.net";
+    protected static void extractMisc(Element story, Fanfic fic) {
         String[] properties = story.select("div.z-padtop2.xgray").text().split(" - ");
         List<String> propertyList = new ArrayList<String>(Arrays.asList(properties));
         Iterator<String> iterator = propertyList.iterator();
@@ -189,27 +143,6 @@ public class Scraper {
         fic.setCharacters(characters);
         fic.setPairings(pairings);
 
-    }
-
-    private static void extractDates(Element story, Fanfic fic) {
-        Elements publishedData = story.select("span");
-        Iterator<Element> iterator = publishedData.iterator();
-        String publishedString = iterator.next().attr("data-xutime");
-        if (publishedString.equals("")) {
-            publishedString = iterator.next().attr("data-xutime");
-        }
-        fic.setPublishedDate(new Date(Long.parseLong(publishedString) * 1000L));
-
-        if (publishedData.size() < 3) {
-            return;
-        }
-
-        //updated date may not always exist
-        //easier way to tell is to check whether there's another span after the second
-        //then update values accordingly
-        fic.setUpdatedDate(new Date(Long.parseLong(publishedString) * 1000L));
-        publishedString = iterator.next().attr("data-xutime");
-        fic.setPublishedDate(new Date(Long.parseLong(publishedString) * 1000L));
     }
 
     //Helper method to remove commas from a string representation of a number
