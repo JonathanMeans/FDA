@@ -6,7 +6,7 @@ import java.util.Date;
  * This class represents a fic
  * Methods include setters and getters for each field
  */
-public class Fanfic {
+public class Fanfic implements Comparable<Fanfic> {
     private String title;
     private String ficUrl;
     private String author;
@@ -98,11 +98,25 @@ public class Fanfic {
         this.characters = characters;
     }
 
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
-    }
-
     public int getReviews() {
         return reviews;
     }
+
+    public double getPopularity() {
+        if (popularity == 0) {
+            popularity = reviews / Math.log((new Date().getTime() - updatedDate.getTime() / 1000 / 60 / 60 / 24 + 2));
+            //2 is added to pre-emptively prevent division by 0
+        }
+        return  popularity;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    @Override
+    public int compareTo(Fanfic fic) {
+        return (int) Math.signum(this.getPopularity() - fic.getPopularity());
+    }
+
 }

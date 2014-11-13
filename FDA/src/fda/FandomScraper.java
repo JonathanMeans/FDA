@@ -8,14 +8,67 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Subclass of Scraper
  * Contains method specific to scraping relevant information from fandom pages
  */
 public class FandomScraper extends  Scraper {
+
+    public static BoundedSortedFics extractFics(String url, int days) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        int numPages = countPages(doc, url);
+        int currentPage = 1;
+
+        List<Fanfic> ficList = new ArrayList<Fanfic>();
+        BoundedSortedFics topFicList = new BoundedSortedFics(days);
+
+        long timestamp = new Date().getTime() - days * 24 * 60 * 60 * 1000;
+        Date boundaryDate = new Date(timestamp);
+
+        boolean datePassed = false;
+
+        do {
+            Elements stories = doc.select("div.z-list.zhover.zpointer");
+            for (Element story : stories) {
+                Fanfic fic = extractFicData(story);
+
+                if (fic.getUpdatedDate().before(boundaryDate)) {
+                    datePassed = true;
+                    break;
+                }
+
+                if (!topFicList.insert(fic)) {
+                    ficList.add(fic);
+                }
+
+            }
+
+            url = incrementPage(url, currentPage);
+            doc = Jsoup.connect(url).get();
+            currentPage++;
+        } while (!datePassed && currentPage <= numPages);
+
+        return topFicList;
+    }
+
+    private static String incrementPage(String url, int pageNumber) throws MalformedURLException {
+        if (pageNumber == 1) {
+            if (new URL(url).getQuery() == null) {
+                if (!url.endsWith("/")) {
+                    url = url + "/";
+                }
+                return url + "?p=2";
+            }
+            return url + "&p=2";
+        }
+
+        return url.substring(0, url.length() - Integer.toString(pageNumber).length()) + Integer.toString(pageNumber + 1);
+    }
 
     private static Fanfic extractFicData(Element story) {
         Fanfic fic = new Fanfic();
@@ -24,7 +77,7 @@ public class FandomScraper extends  Scraper {
         extractSummary(story, fic);
         extractMisc(story, fic);
         extractDates(story, fic);
-        return new Fanfic();
+        return fic;
     }
 
         private static void extractTitleData(Element story, Fanfic fic) {
@@ -57,6 +110,7 @@ public class FandomScraper extends  Scraper {
             publishedString = iterator.next().attr("data-xutime");
         }
         fic.setPublishedDate(new Date(Long.parseLong(publishedString) * 1000L));
+        fic.setUpdatedDate(new Date(Long.parseLong(publishedString) * 1000L));
 
         if (publishedData.size() < 3) {
             return;
