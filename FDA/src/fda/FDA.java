@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class FDA extends javax.swing.JFrame {
+public class fda extends javax.swing.JFrame {
 
     /** Creates new form FDA */
-    public FDA() {
+    public fda() {
         initComponents();
     }
 
