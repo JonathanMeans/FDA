@@ -17,11 +17,11 @@ import java.util.List;
  * Subclass of Scraper
  * Contains method specific to scraping relevant information from fandom pages
  */
-public class FandomScraper extends  Scraper {
+public class FandomScraper extends Scraper {
 
-    public static BoundedSortedFics extractFics(String url, int days) throws IOException {
+    public static Fanfic[] extractFics(String url, int days) throws IOException {
         Document doc = Jsoup.connect(url).get();
-        int numPages = countPages(doc, url);
+        int numPages = countPages(doc);
         int currentPage = 1;
 
         List<Fanfic> ficList = new ArrayList<Fanfic>();
@@ -53,7 +53,21 @@ public class FandomScraper extends  Scraper {
             currentPage++;
         } while (!datePassed && currentPage <= numPages);
 
-        return topFicList;
+        Fanfic[] topFicArray = new Fanfic[topFicList.size() + 1 + ficList.size()];
+        for (int i = 0; i < topFicList.size(); ++i) {
+            topFicArray[i] = topFicList.get(i);
+        }
+
+        topFicArray[topFicList.size()] = null;
+
+        int i = topFicList.size() + 1;
+
+        for (Fanfic fic : ficList) {
+            topFicArray[i] = fic;
+            ++i;
+        }
+
+        return topFicArray;
     }
 
     private static String incrementPage(String url, int pageNumber) throws MalformedURLException {
@@ -124,7 +138,7 @@ public class FandomScraper extends  Scraper {
         fic.setPublishedDate(new Date(Long.parseLong(publishedString) * 1000L));
     }
 
-    private static int countPages(Document doc, String url) {
+    private static int countPages(Document doc) {
         Elements pageList = doc.select("center[style=margin-top:5px;margin-bottom:5px;]");
 
         //If you're trying to call this on a fandom with only one page, something's wrong

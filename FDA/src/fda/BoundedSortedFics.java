@@ -1,6 +1,7 @@
 package fda;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,5 +38,13 @@ public class BoundedSortedFics {
         list[location] = fic;
 
         return  true;
+    }
+
+    public int size() {
+        return index;
+    }
+
+    public Fanfic get(int i) {
+        return list[i];
     }
 }
