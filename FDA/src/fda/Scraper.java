@@ -28,8 +28,6 @@ public class Scraper {
         List<String> propertyList = new ArrayList<String>(Arrays.asList(properties));
         Iterator<String> iterator = propertyList.iterator();
 
-        //TODO: method may break on a fic which lists the universe. Test this and fix.
-
         //calculate important numbers
         int ratingLength = "Rated: ".length();
         int chapterLength = "Chapters: ".length();
