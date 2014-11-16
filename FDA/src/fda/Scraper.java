@@ -64,7 +64,7 @@ public class Scraper {
         //Fics may not have favorites, follows, or reviews, which makes this a bit more involved
         //Iterator -should- be incremented in a way to handle it, though
         String reviews = iterator.next();
-        String favs = null;
+        String favs;
         String follows = null;
 
         //We know there is at least a published date left in the properties, so no need to check whether reviews is null
@@ -111,7 +111,7 @@ public class Scraper {
         String[][] pairings = new String[2][2];
 
         String[] characterArray = data.split(", ");
-        String character = null;
+        String character;
 
         //If there are pairings, they will always come first
         //Remove brackets and insert characters and pairings to proper arrays
