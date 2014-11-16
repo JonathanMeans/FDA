@@ -1,23 +1,34 @@
 package fda;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.*;
 
 /*
  * This class is for extracting relevant information from fanfiction.net
+ * Static methods only
+ * Should never be instantiated
  */
 public class Scraper {
 
     public static final String BASE_URL = "https://www.fanfiction.net";
+
+    /*
+     * This methods populates the following fields of the Fanfic class:
+     * Rating
+     * Chapters
+     * Words
+     * reviews
+     * favorites
+     * follows
+     * characters
+     * pairings
+     */
     protected static void extractMisc(Element story, Fanfic fic) {
         String[] properties = story.select("div.z-padtop2.xgray").text().split(" - ");
         List<String> propertyList = new ArrayList<String>(Arrays.asList(properties));
         Iterator<String> iterator = propertyList.iterator();
+
+        //TODO: method may break on a fic which lists the universe. Test this and fix.
 
         //calculate important numbers
         int ratingLength = "Rated: ".length();
@@ -33,17 +44,21 @@ public class Scraper {
 
         //Apparently genre is option
         //This mess handles that
+        //Before the 'if', it is unknown whether the String genres contains the genres or the chapter count
         String genres = iterator.next();
-        String chapters = null;
+        String chapters;
         if (!genres.startsWith("Chapters: ")) {
-            fic.setGenres(genres.split("/"));
+            fic.setGenres(genres.split("/")); //genres contains the right information. Split it and proceed
             chapters = iterator.next();
         } else {
+            //the fic has no genres. Discard, and set the chapters String
             chapters = genres;
         }
 
         //I think we can assume there won't be anything longer than 999 chapters
-        fic.setChapters(Integer.parseInt(chapters.substring(chapterLength)));
+        //But why risk it?
+        String chapterCount = removeCommas(chapters.substring(chapterLength));
+        fic.setChapters(Integer.parseInt(chapterCount));
 
         String wordCount = removeCommas(iterator.next().substring(wordLength));
         fic.setWords(Integer.parseInt(wordCount));
@@ -90,7 +105,9 @@ public class Scraper {
         extractCharactersFromPropertyList(characterData, fic);
     }
 
+    //This method finds the characters and pairings of a fic
     private static void extractCharactersFromPropertyList(String data, Fanfic fic) {
+        //Make sure there -are- actually characters
         if (data.contains("data-xutime")) { return; } //if there is a character named "data-xutime," I give up.
         String[] characters = new String[4];
         String[][] pairings = new String[2][2];

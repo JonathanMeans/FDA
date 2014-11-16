@@ -1,30 +1,36 @@
 package fda;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Arrays;
 
 /**
- * Created by jwsm on 12/11/14.
+ * Class for easy storage and maintenance of top Fanfics
  */
 //This would be better as a heap, if there's time
 public class BoundedSortedFics {
     private Fanfic[] list;
-    int maxSize;
-    int index = 0;
+    private int maxSize;
+    private int index = 0;
 
     public BoundedSortedFics(int maxSize) {
         this.maxSize = maxSize;
         list = new Fanfic[maxSize];
     }
 
+    //Insert an Fanfic into its proper order, if applicable
+    //Could be done in O(lg n), I believe, but the array should never grow excessively long,
+    //premature optimization, is evil, I don't want to build a heap right now, etc.
+    //Nothing wrong with linear time.
     public boolean insert(Fanfic fic) {
         if (index < maxSize) {
             list[index] = fic;
             index++;
+            //If I have time, it's probably best to wait until the array is full before sorting,
+            //or just create a separate insertion helper method
+            Arrays.sort(list);
             return true;
         }
 
+        //Fic is less popular than everything already in full array. Discard
         if (fic.compareTo(list[maxSize - 1]) <=0 ) {
             return false;
         }
@@ -40,6 +46,7 @@ public class BoundedSortedFics {
         return  true;
     }
 
+    //self-explanatory
     public int size() {
         return index;
     }

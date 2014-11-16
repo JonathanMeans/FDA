@@ -19,10 +19,20 @@ import java.util.List;
  */
 public class FandomScraper extends Scraper {
 
+    //This should never be constructed
+    private FandomScraper() {
+
+    }
+
+    //Master method
+    //Return a semi-ordered array of fics, given a url and day-boundary
     public static Fanfic[] extractFics(String url, int days) throws IOException {
         Document doc = Jsoup.connect(url).get();
         int numPages = countPages(doc);
         int currentPage = 1;
+
+        //find a number between 10 and 100 that's kinda correlated to how far back we're searching
+        int numTopFics = Math.min(100, Math.max(10, days));
 
         List<Fanfic> ficList = new ArrayList<Fanfic>();
         BoundedSortedFics topFicList = new BoundedSortedFics(days);

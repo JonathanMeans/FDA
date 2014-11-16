@@ -104,7 +104,7 @@ public class Fanfic implements Comparable<Fanfic> {
 
     public double getPopularity() {
         if (popularity == 0) {
-            popularity = reviews / Math.log((new Date().getTime() - updatedDate.getTime() / 1000 / 60 / 60 / 24 + 2));
+            popularity = favorites / Math.log((new Date().getTime() - updatedDate.getTime() / 1000 / 60 / 60 / 24 + 2));
             //2 is added to pre-emptively prevent division by 0
         }
         return  popularity;
