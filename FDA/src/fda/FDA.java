@@ -76,7 +76,7 @@ public class FDA extends javax.swing.JFrame {
             }
         });
 
-        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 6 month", "Updated within 1 year" }));
+        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 2 month" }));
         timerangeComboBox.setToolTipText("Time Range Options");
         timerangeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,6 +323,8 @@ public class FDA extends javax.swing.JFrame {
         if (UrlType.FANDOM== checkUrl(searchTextField.getText()))
         {
             //do search
+            fanficJFrame frame = new fanficJFrame();    
+            frame.setVisible(true);          
             System.out.println("and here do search");
         }
         else
@@ -384,12 +386,16 @@ public class FDA extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    private void timerangeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+    private void timerangeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO filter display top 10 fics:
         // get the selected item:
         String selectedBook = (String) timerangeComboBox.getSelectedItem();
+        if(timerangeComboBox.getSelectedIndex()==0) selection=100;
+        else if (timerangeComboBox.getSelectedIndex()==1) selection=7;
+        else if (timerangeComboBox.getSelectedIndex()==2) selection=30;
+        else if (timerangeComboBox.getSelectedIndex()==3) selection=60;
         System.out.println("Filter: " + selectedBook);
-    }
+    }      
     public UrlType checkUrl(String url) {
         String ficString = BASE_URL + "/s/\\d+/\\d+/.+";
         String betaString = BASE_URL + "/betareaders/.+";
