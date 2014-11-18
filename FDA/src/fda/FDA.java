@@ -9,8 +9,7 @@ import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class FDA extends javax.swing.JFrame {
 
@@ -41,9 +40,10 @@ public class FDA extends javax.swing.JFrame {
         downloadlinkLabel = new javax.swing.JLabel();
         downloadTextField = new javax.swing.JTextField();
         DownloadButton = new javax.swing.JButton();
-        desktopRadioButton = new javax.swing.JRadioButton();
+        folderButton = new javax.swing.JButton();
+        folderSelecter = new javax.swing.JFileChooser();
+        downloadLocationField = new javax.swing.JTextField();
         downloadLocationLabel = new javax.swing.JLabel();
-        CdriveRadioButton = new javax.swing.JRadioButton();
         sortbetaPanel = new javax.swing.JPanel();
         betalinkLabel = new javax.swing.JLabel();
         sortBetaTextField = new javax.swing.JTextField();
@@ -156,21 +156,19 @@ public class FDA extends javax.swing.JFrame {
             }
         });
 
-        desktopRadioButton.setText("Desktop");
-        desktopRadioButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        desktopRadioButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        folderButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        folderButton.setText("Location");
+        folderButton.setToolTipText("Download fic");
+        folderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                folderButton1ActionPerformed(evt);
+            }
+        });
+
+        folderSelecter.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         downloadLocationLabel.setText("Location:");
         downloadLocationLabel.setToolTipText("");
-
-        CdriveRadioButton.setText("Cdrive");
-        CdriveRadioButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        CdriveRadioButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        CdriveRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CdriveRadioButtonActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout downloadPanelLayout = new org.jdesktop.layout.GroupLayout(downloadPanel);
         downloadPanel.setLayout(downloadPanelLayout);
@@ -185,13 +183,12 @@ public class FDA extends javax.swing.JFrame {
                                                         .add(downloadLocationLabel))
                                                 .add(46, 46, 46)
                                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                                        .add(chapterTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                                        .add(desktopRadioButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .add(downloadLocationField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                        .add(chapterTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                                                 .add(12, 12, 12)
                                                 .add(toLabel)
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                                        .add(CdriveRadioButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .add(chapterTextField2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
                                         .add(downloadPanelLayout.createSequentialGroup()
                                                 .add(downloadlinkLabel)
@@ -199,6 +196,7 @@ public class FDA extends javax.swing.JFrame {
                                                 .add(downloadTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(18, 18, Short.MAX_VALUE)
                                 .add(DownloadButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(folderButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         downloadPanelLayout.setVerticalGroup(
@@ -217,9 +215,9 @@ public class FDA extends javax.swing.JFrame {
                                         .add(toLabel))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 17, Short.MAX_VALUE)
                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                        .add(desktopRadioButton)
+                                        .add(downloadLocationField)
                                         .add(downloadLocationLabel)
-                                        .add(CdriveRadioButton)))
+                                        .add(folderButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         chapterLabel.getAccessibleContext().setAccessibleName("chapters");
@@ -334,6 +332,13 @@ public class FDA extends javax.swing.JFrame {
         }
     }
 
+    private void folderButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        int returnVal = folderSelecter.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+            downloadLocationField.setText(folderSelecter.getSelectedFile().toString());
+    }
+
     private void DownloadButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // // TODO download button:
         // validateURL validURl = new validateURL();
@@ -366,10 +371,6 @@ public class FDA extends javax.swing.JFrame {
                     + "please try again.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void CdriveRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
@@ -446,20 +447,21 @@ public class FDA extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify                     
-    private javax.swing.JRadioButton CdriveRadioButton;
+    // Variables declaration - do not modify
     private javax.swing.JButton DownloadButton;
+    private javax.swing.JButton folderButton;
     private javax.swing.JLabel betalinkLabel;
     private javax.swing.JLabel chapterLabel;
     private javax.swing.JTextField chapterTextField1;
     private javax.swing.JTextField chapterTextField2;
-    private javax.swing.JRadioButton desktopRadioButton;
     private javax.swing.JPanel displayficPanel;
+    private javax.swing.JTextField downloadLocationField;
     private javax.swing.JLabel downloadLocationLabel;
     private javax.swing.JPanel downloadPanel;
     private javax.swing.JTextField downloadTextField;
     private javax.swing.JLabel downloadlinkLabel;
     private javax.swing.JLabel filterLabel;
+    private javax.swing.JFileChooser folderSelecter;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JLabel searchlinkLabel;
@@ -468,6 +470,6 @@ public class FDA extends javax.swing.JFrame {
     private javax.swing.JPanel sortbetaPanel;
     private javax.swing.JComboBox timerangeComboBox;
     private javax.swing.JLabel toLabel;
-    // End of variables declaration                   
+    // End of variables declaration
 
 }
