@@ -35,7 +35,7 @@ public class FandomScraper extends Scraper {
         int numTopFics = Math.min(100, Math.max(10, days));
 
         List<Fanfic> ficList = new ArrayList<Fanfic>();
-        BoundedSortedFics topFicList = new BoundedSortedFics(days);
+        BoundedSortedFics topFicList = new BoundedSortedFics(numTopFics);
 
         long timestamp = new Date().getTime() - days * 24 * 60 * 60 * 1000;
         Date boundaryDate = new Date(timestamp);

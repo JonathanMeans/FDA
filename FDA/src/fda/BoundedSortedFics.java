@@ -24,10 +24,12 @@ public class BoundedSortedFics {
         if (index < maxSize) {
             list[index] = fic;
             index++;
-            //If I have time, it's probably best to wait until the array is full before sorting,
-            //or just create a separate insertion helper method
-            Arrays.sort(list);
             return true;
+        }
+
+        if (index == maxSize) {
+            Arrays.sort(list);
+            index++;
         }
 
         //Fic is less popular than everything already in full array. Discard
@@ -35,8 +37,8 @@ public class BoundedSortedFics {
             return false;
         }
 
-        int location = index;
-        while (fic.compareTo(list[index]) > 0 && location > 0) {
+        int location = list.length - 1;
+        while (fic.compareTo(list[location]) > 0 && location > 0) {
             list[location] = list[location - 1];
             location--;
         }
@@ -48,7 +50,7 @@ public class BoundedSortedFics {
 
     //self-explanatory
     public int size() {
-        return index;
+        return list.length;
     }
 
     public Fanfic get(int i) {

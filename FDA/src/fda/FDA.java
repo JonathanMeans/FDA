@@ -9,6 +9,7 @@ import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -78,7 +79,7 @@ public class FDA extends javax.swing.JFrame {
             }
         });
 
-        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 2 month" }));
+        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 2 month"}));
         timerangeComboBox.setToolTipText("Time Range Options");
         timerangeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,11 +321,19 @@ public class FDA extends javax.swing.JFrame {
         // TODO Search button:
 
         // validateURL validURl = new validateURL();
-        if (UrlType.FANDOM== checkUrl(searchTextField.getText()))
+        String url = searchTextField.getText();
+        if (UrlType.FANDOM== checkUrl(url))
         {
             //do search
-            fanficJFrame frame = new fanficJFrame();    
-            frame.setVisible(true);          
+            //TODO: Actually calculate numDays from selection!!
+            int numDays = 0;
+            try {
+                System.out.println("Started");
+                fanficJFrame frame = new fanficJFrame(url, numDays);
+                frame.setVisible(true);
+            } catch (IOException e) {
+                //TODO: display error message
+            }
             System.out.println("and here do search");
         }
         else
@@ -437,6 +446,7 @@ public class FDA extends javax.swing.JFrame {
     private void timerangeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO filter display top 10 fics:
         // get the selected item:
+        int selection;
         String selectedBook = (String) timerangeComboBox.getSelectedItem();
         if(timerangeComboBox.getSelectedIndex()==0) selection=100;
         else if (timerangeComboBox.getSelectedIndex()==1) selection=7;

@@ -18,6 +18,67 @@ public class Fanfic implements Comparable<Fanfic> {
     private int chapters;
     private int words;
     private int favorites;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getFicUrl() {
+        return ficUrl;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getAuthorUrl() {
+        return authorUrl;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String[] getGenres() {
+        return genres;
+    }
+
+    public int getChapters() {
+        return chapters;
+    }
+
+    public int getWords() {
+        return words;
+    }
+
+    public int getFavorites() {
+        return favorites;
+    }
+
+    public int getFollows() {
+        return follows;
+    }
+
+    public Date getPublishedDate() {
+        return publishedDate;
+    }
+
+    public String[] getCharacters() {
+        return characters;
+    }
+
+    public String[][] getPairings() {
+        return pairings;
+    }
+
     private int reviews;
     private int follows;
     private Date publishedDate;
@@ -119,4 +180,7 @@ public class Fanfic implements Comparable<Fanfic> {
         return (int) Math.signum(this.getPopularity() - fic.getPopularity());
     }
 
+    public String toString() {
+        return title + " by " + author;
+    }
 }
