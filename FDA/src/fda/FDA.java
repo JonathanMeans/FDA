@@ -7,6 +7,8 @@ package fda;
 
 import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
+
+import java.io.FileWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -348,6 +350,51 @@ public class FDA extends javax.swing.JFrame {
         {
             //do search
             System.out.println("and here do download");
+
+            org.jsoup.nodes.Document doc;
+            //try {
+                //doc = org.jsoup.Jsoup.connect(downloadTextField.getText()).get();
+                //String text = doc.body().text();
+
+                String ficName = downloadTextField.getText().substring(downloadTextField.getText().lastIndexOf("/")+1);
+                java.io.File dir = new java.io.File(downloadLocationField.getText()+java.io.File.separator+ficName);
+
+                System.out.println("Downloading to "+dir.getAbsolutePath());
+
+                if (!dir.exists()) {
+                    try {
+                        dir.mkdir();
+                    } catch (SecurityException se) {
+                        java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, se);
+                        return;  //Save directory couldn't be found or created, abort.
+                    }
+                }
+
+                int chStart = Integer.parseInt(chapterTextField1.getText());
+                int chEnd = Integer.parseInt(chapterTextField2.getText());
+                String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
+                baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
+
+                System.out.println("Base fanfic address "+baseAddress);
+
+                for (int i=chStart; i<=chEnd; i++) {
+                    try {
+                        doc = org.jsoup.Jsoup.connect(baseAddress + i + "/" + ficName).get();
+                        String text = doc.body().text();
+
+                        java.io.File chapter = new java.io.File(dir+java.io.File.separator+i+"_"+ficName+".html");
+                        FileWriter oStream = new FileWriter(chapter);
+                        oStream.write(text);
+                        oStream.close();
+                    } catch (java.io.IOException ex) {
+                        java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    }
+                }
+
+            //} catch (java.io.IOException ex) {
+            //    java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //}
+
         }
         else
         {
