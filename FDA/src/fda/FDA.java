@@ -4,6 +4,10 @@ package fda;
 import org.jsoup.Jsoup;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -327,7 +331,9 @@ public class FDA extends javax.swing.JFrame {
     }// </editor-fold>
     public enum UrlType{FANDOM, FIC, BETA, UNKNOWN}
     public static final String BASE_URL = "https://www.fanfiction.net";
-    public Integer selection;
+
+    public int selection = Integer.MAX_VALUE;
+
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO Search button:
 
@@ -340,11 +346,12 @@ public class FDA extends javax.swing.JFrame {
             try {
                 System.out.println("Started");
                 frame = new fanficJFrame(url, selection);
+                frame.setVisible(true);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            frame.setVisible(true);
+
         }
         else
         {
@@ -442,10 +449,12 @@ public class FDA extends javax.swing.JFrame {
         // TODO filter display top 10 fics:
         // get the selected item:
         String selectedBook = (String) timerangeComboBox.getSelectedItem();
-        if(timerangeComboBox.getSelectedIndex()==0) selection=100;
+        if(timerangeComboBox.getSelectedIndex()==0) selection=Integer.MAX_VALUE; //If it's the max value, it will never actually
+                                                     //get used. This is a simple approximation that will yield the right thing
+                                                     //without having to recalculate how long the site's been around each time.
         else if (timerangeComboBox.getSelectedIndex()==1) selection=7;
         else if (timerangeComboBox.getSelectedIndex()==2) selection=30;
-        else if (timerangeComboBox.getSelectedIndex()==3) selection=60;
+        else if (timerangeComboBox.getSelectedIndex()==3) selection=365 / 2;
         System.out.println("Filter: " + selectedBook);
     }
 

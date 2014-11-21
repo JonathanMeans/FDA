@@ -21,6 +21,8 @@ public class BoundedSortedFics {
     //premature optimization, is evil, I don't want to build a heap right now, etc.
     //Nothing wrong with linear time.
     public boolean insert(Fanfic fic) {
+        //this strategy isn't going to work when there are less than the overflow number number of fics
+        //that's unlikely to happen, though, so we'll leave it for now.
         if (index < maxSize) {
             list[index] = fic;
             index++;
@@ -29,28 +31,41 @@ public class BoundedSortedFics {
 
         if (index == maxSize) {
             Arrays.sort(list);
+
+            //reverse array
+            for (int i = 0; i < list.length / 2; ++i) {
+                Fanfic temp = list[i];
+                list[i] = list[list.length - i - 1];
+                list[list.length - i - 1] = temp;
+            }
             index++;
+            return true;
         }
 
         //Fic is less popular than everything already in full array. Discard
-        if (fic.compareTo(list[maxSize - 1]) <=0 ) {
+        if (fic.compareTo(list[maxSize - 1]) < 0 ) {
             return false;
         }
 
-        int location = list.length - 1;
-        while (fic.compareTo(list[location]) > 0 && location > 0) {
-            list[location] = list[location - 1];
-            location--;
-        }
-
-        list[location] = fic;
+        actuallyInsert(fic);
 
         return  true;
     }
 
+    private void actuallyInsert(Fanfic fic) {
+        int location = list.length - 1;
+
+        while (location > 0 && fic.compareTo(list[location]) >= 0) {
+            list[location] = list[location - 1];
+            location--;
+            }
+
+        list[location] = fic;
+    }
+
     //self-explanatory
     public int size() {
-        return list.length;
+        return Math.min(index, maxSize);
     }
 
     public Fanfic get(int i) {

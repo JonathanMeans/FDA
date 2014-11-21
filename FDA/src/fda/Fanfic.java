@@ -181,6 +181,6 @@ public class Fanfic implements Comparable<Fanfic> {
     }
 
     public String toString() {
-        return title + " by " + author;
+        return title + " by " + author + " | " + popularity;
     }
 }
