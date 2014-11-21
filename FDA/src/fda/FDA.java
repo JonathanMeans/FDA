@@ -144,8 +144,8 @@ public class FDA extends javax.swing.JFrame {
         downloadlinkLabel.setText("Fic URL:");
 
         //Valid URL's but can not verify non english links
-//        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor"); //This works great
-        downloadTextField.setText("https://www.fanfiction.net/s/10701601/1/Bid-Time-Return"); //This works great
+        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor"); //This works great
+//        downloadTextField.setText("https://www.fanfiction.net/s/10701601/1/Bid-Time-Return"); //This works great
 //        downloadTextField.setText("https://www.fanfiction.net/s/10801771/1/Reuni%C3%A9ndonos-de-nuevo-MIDLINK");
 //        downloadTextField.setText("https://www.fanfiction.net/s/9391959/1/%E5%A6%88%E8%9B%8B%E5%87%BA%E5%93%81%E6%B8%A3%E8%87%AA%E6%B1%89%E5%8C%96%E9%BB%91%E7%AF%AECP%E9%9D%92%E9%BB%91-Snowfall");
         //Invalid URL's
@@ -173,7 +173,7 @@ public class FDA extends javax.swing.JFrame {
 
         folderButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         folderButton.setText("Location");
-        folderButton.setToolTipText("Download fic");
+        folderButton.setToolTipText("Select Directory to Download files to");
         folderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 folderButton1ActionPerformed(evt);
@@ -424,6 +424,14 @@ public class FDA extends javax.swing.JFrame {
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
                     Elements Opts = doc.select("option");
+
+                    if (chEnd > Opts.size() / 2) {
+                        JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                        JOptionPane.showMessageDialog(frame, "You can not select more then\n" + Opts.size()/2 + " Chapters", "FDA", JOptionPane.ERROR_MESSAGE);
+                        chapterTextField2.setText("");
+                        return;
+                    }
+
                     String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
                     String textTitle = ficTitle.text(); //Use the web page title as a document title
                     //Get Titles and Filename
@@ -480,6 +488,9 @@ public class FDA extends javax.swing.JFrame {
                     }
                     text = text + "</br></br><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
                     java.io.File chapter = new java.io.File(dir+java.io.File.separator + filenameTitle);
+
+                    System.out.println(Opts.size());
+
                     FileWriter oStream = new FileWriter(chapter);
                     oStream.write(text);
                     oStream.close();
