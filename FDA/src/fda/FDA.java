@@ -143,7 +143,16 @@ public class FDA extends javax.swing.JFrame {
 
         downloadlinkLabel.setText("Fic URL:");
 
-        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor");
+        //Valid URL's but can not verify non english links
+//        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor"); //This works great
+        downloadTextField.setText("https://www.fanfiction.net/s/10701601/1/Bid-Time-Return"); //This works great
+//        downloadTextField.setText("https://www.fanfiction.net/s/10801771/1/Reuni%C3%A9ndonos-de-nuevo-MIDLINK");
+//        downloadTextField.setText("https://www.fanfiction.net/s/9391959/1/%E5%A6%88%E8%9B%8B%E5%87%BA%E5%93%81%E6%B8%A3%E8%87%AA%E6%B1%89%E5%8C%96%E9%BB%91%E7%AF%AECP%E9%9D%92%E9%BB%91-Snowfall");
+        //Invalid URL's
+//        downloadTextField.setText("https://www.fanfiction.net/"); //Came up invalid
+//        downloadTextField.setText("https://www.fanfiction.net/betareaders/all/cartoon/"); //Came up invalid
+//        downloadTextField.setText("https://www.fanfiction.net/game/Pok%C3%A9mon/"); //Came up invalid
+//        downloadTextField.setText("https://www.fanfiction.net/s/9394959/1/fail"); //Created directory but no downloads
         downloadTextField.setPreferredSize(new java.awt.Dimension(232, 20));
         downloadTextField.setSelectionEnd(45);
         downloadTextField.setSelectionStart(45);
