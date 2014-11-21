@@ -7,9 +7,7 @@ package fda;
 
 import org.jfree.chart.demo.BarChartDemo1;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.FileWriter;
@@ -165,7 +163,7 @@ public class FDA extends javax.swing.JFrame {
 
         folderButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         folderButton.setText("Location");
-        folderButton.setToolTipText("Select Directory to Download fics to");
+        folderButton.setToolTipText("Download fic");
         folderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 folderButton1ActionPerformed(evt);
@@ -363,6 +361,7 @@ public class FDA extends javax.swing.JFrame {
         {
             //do search
             System.out.println("and here do download");
+
             org.jsoup.nodes.Document doc;
             //try {
                 //doc = org.jsoup.Jsoup.connect(downloadTextField.getText()).get();
@@ -382,25 +381,52 @@ public class FDA extends javax.swing.JFrame {
                     }
                 }
 
-            int chStart = Integer.parseInt(chapterTextField1.getText());
-            int chEnd = Integer.parseInt(chapterTextField2.getText());
-            String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
-            baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
+                int chStart = Integer.parseInt(chapterTextField1.getText());
+                int chEnd = Integer.parseInt(chapterTextField2.getText());
+                String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
+                baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
 
             for (int i=chStart; i<=chEnd; i++) {
                 try {
                     Document doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
-                    String text = ficTitle + "</br>"; //Gives the web page the same title as the original.
+                    String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
+                    //Setup web page
+                    text = text + "<style type='text/css'>\n"
+                            + "a:link {\n"
+                            + "color: #00F;\n"
+                            + "text-decoration: none;\n"
+                            + "}\n"
+                            + "a:visited {\n"
+                            + "text-decoration: none;\n"
+                            + "color: #F00;\n"
+                            + "}\n"
+                            + "a:hover {\n"
+                            + "text-decoration: none;\n"
+                            + "color: #0F0;\n"
+                            + "}\n"
+                            + "a:active {\n"
+                            + "text-decoration: none;\n"
+                            + "color: #006;\n"
+                            + "}\n"
+                            + "body {\n"
+                            + "    margin-left: 50px;\n"
+                            + "    margin-top: 25px;\n"
+                            + "    margin-right: 50px;\n"
+                            + "    margin-bottom: 25px;\n"
+                            + "}\n"
+                            + "</style>\n"
+                            + "<body>\n";
                     String textTitle = ficTitle.text(); //Use the web page title as a document title
-                    text = text + "<center><h3>" + textTitle + "</h3></center>";
-                    text = text + para + "</br>";
+                    text = text + "<center><h3>" + textTitle.substring(ficName.length(),textTitle.lastIndexOf(",")) + "</h3></center>\n";
+                    text = text + para + "\n";
                     if (i == 1) {
-                        text = text + "<center><br><a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next Chapter >></a></br></center>";
+                        text = text + "<center><a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next >></a>\n";  //Next link only for first page
                     } else {
-                        text = text + "<center><br><a href='" + dir+java.io.File.separator+(i-1)+"_"+ficName+".html" + "'><< Previous Chapter</a>" + "   " + "<a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next Chapter >></a></br></center>";
+                        text = text + "<center><a href='" + dir+java.io.File.separator+(i-1)+"_"+ficName+".html" + "'><< Previous</a>" + "          " + "<a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next >></a>\n"; //Previous and Next Links
                     }
+                    text = text + "</br></br><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
                     java.io.File chapter = new java.io.File(dir+java.io.File.separator+i+"_"+ficName+".html");
                     FileWriter oStream = new FileWriter(chapter);
                     oStream.write(text);
@@ -408,7 +434,7 @@ public class FDA extends javax.swing.JFrame {
                 } catch (java.io.IOException ex) {
                     java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                }
+            }
 
             //} catch (java.io.IOException ex) {
             //    java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
