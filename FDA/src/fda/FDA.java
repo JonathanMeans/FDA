@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
+import java.lang.NumberFormatException;
 
 public class FDA extends javax.swing.JFrame {
 
@@ -380,9 +381,31 @@ public class FDA extends javax.swing.JFrame {
                         return;  //Save directory couldn't be found or created, abort.
                     }
                 }
-
-                int chStart = Integer.parseInt(chapterTextField1.getText());
-                int chEnd = Integer.parseInt(chapterTextField2.getText());
+                // Verify Chapter Numbers
+                int chStart = 0;
+                int chEnd = 0;
+                try {
+                    chStart = Integer.parseInt(chapterTextField1.getText());
+                } catch (java.lang.NumberFormatException ex) {
+                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                    JOptionPane.showMessageDialog(frame, "Invalid Beginning Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
+                    chapterTextField1.setText("");
+                    return;
+                }
+                if (chStart == 0) {
+                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                    JOptionPane.showMessageDialog(frame, "Beginning Chapter Number\ncan not be 0", "FDA", JOptionPane.ERROR_MESSAGE);
+                    chapterTextField1.setText("");
+                    return;
+                }
+                try {
+                    chEnd = Integer.parseInt(chapterTextField2.getText());
+                } catch (java.lang.NumberFormatException ex) {
+                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                    JOptionPane.showMessageDialog(frame, "Invalid Ending Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
+                    chapterTextField2.setText("");
+                    return;
+                }
                 String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
                 baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
 
@@ -391,7 +414,28 @@ public class FDA extends javax.swing.JFrame {
                     doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
+                    Elements Opts = doc.select("option");
                     String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
+                    String textTitle = ficTitle.text(); //Use the web page title as a document title
+                    //Get Titles and Filename
+                    String prevTitle = "";
+                    String pageTitle = Opts.get(i-1).text();
+                    pageTitle = "Chapter " + pageTitle.replace(".",":");
+
+                    if (i > 1) {
+                        prevTitle = Opts.get(i-2).text();
+                        prevTitle = prevTitle.replace(". ","_");
+                        prevTitle = prevTitle.replace(" ","_") + ".html";
+                    }
+
+                    String filenameTitle = Opts.get(i-1).text();
+                    filenameTitle = filenameTitle.replace(". ","_");
+                    filenameTitle = filenameTitle.replace(" ","_") + ".html";
+
+                    String nextTitle = Opts.get(i).text();
+                    nextTitle = nextTitle.replace(". ","_");
+                    nextTitle = nextTitle.replace(" ","_") + ".html";
+
                     //Setup web page
                     text = text + "<style type='text/css'>\n"
                             + "a:link {\n"
@@ -417,17 +461,16 @@ public class FDA extends javax.swing.JFrame {
                             + "    margin-bottom: 25px;\n"
                             + "}\n"
                             + "</style>\n"
-                            + "<body>\n";
-                    String textTitle = ficTitle.text(); //Use the web page title as a document title
-                    text = text + "<center><h3>" + textTitle.substring(ficName.length(),textTitle.lastIndexOf(",")) + "</h3></center>\n";
-                    text = text + para + "\n";
+                            + "<body>\n"
+                            + "<center><h3>" + pageTitle + "</h3></center>\n"
+                            + para + "\n";
                     if (i == 1) {
-                        text = text + "<center><a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next >></a>\n";  //Next link only for first page
+                        text = text+ "<center><a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n";  //Next link only for first page
                     } else {
-                        text = text + "<center><a href='" + dir+java.io.File.separator+(i-1)+"_"+ficName+".html" + "'><< Previous</a>" + "          " + "<a href='" + dir+java.io.File.separator+(i+1)+"_"+ficName+".html" + "'>Next >></a>\n"; //Previous and Next Links
+                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.get(i-2).text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n"; //Previous and Next Links
                     }
                     text = text + "</br></br><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
-                    java.io.File chapter = new java.io.File(dir+java.io.File.separator+i+"_"+ficName+".html");
+                    java.io.File chapter = new java.io.File(dir+java.io.File.separator + filenameTitle);
                     FileWriter oStream = new FileWriter(chapter);
                     oStream.write(text);
                     oStream.close();
@@ -447,7 +490,7 @@ public class FDA extends javax.swing.JFrame {
         else
         {
             //show error message
-            String message = "\"The download fic link is not recognized,\"\n"
+            String message = "The download fic link is not recognized,\n"
                     + "please try again.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
         }
