@@ -489,8 +489,6 @@ public class FDA extends javax.swing.JFrame {
                     text = text + "</br></br><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
                     java.io.File chapter = new java.io.File(dir+java.io.File.separator + filenameTitle);
 
-                    System.out.println(Opts.size());
-
                     FileWriter oStream = new FileWriter(chapter);
                     oStream.write(text);
                     oStream.close();
