@@ -388,7 +388,7 @@ public class FDA extends javax.swing.JFrame {
 
             for (int i=chStart; i<=chEnd; i++) {
                 try {
-                    Document doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
+                    doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
                     String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
