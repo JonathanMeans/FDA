@@ -144,7 +144,8 @@ public class FDA extends javax.swing.JFrame {
         downloadlinkLabel.setText("Fic URL:");
 
         //Valid URL's but can not verify non english links
-        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor"); //This works great
+//        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor"); //This works great
+        downloadTextField.setText("https://www.fanfiction.net/s/9655643/1/The-Darkness-Within"); //This works great
 //        downloadTextField.setText("https://www.fanfiction.net/s/10701601/1/Bid-Time-Return"); //This works great
 //        downloadTextField.setText("https://www.fanfiction.net/s/10801771/1/Reuni%C3%A9ndonos-de-nuevo-MIDLINK");
 //        downloadTextField.setText("https://www.fanfiction.net/s/9391959/1/%E5%A6%88%E8%9B%8B%E5%87%BA%E5%93%81%E6%B8%A3%E8%87%AA%E6%B1%89%E5%8C%96%E9%BB%91%E7%AF%AECP%E9%9D%92%E9%BB%91-Snowfall");
