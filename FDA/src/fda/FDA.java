@@ -133,7 +133,7 @@ public class FDA extends javax.swing.JFrame {
         chapterLabel.setText("Chapters:");
         chapterLabel.setToolTipText("");
 
-        chapterTextField1.setEditable(false);
+//        chapterTextField1.setEditable(false);
         chapterTextField1.setText("1");
 
         toLabel.setText("To:");
@@ -142,7 +142,7 @@ public class FDA extends javax.swing.JFrame {
 
         downloadlinkLabel.setText("Fic URL:");
 
-        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor ");
+        downloadTextField.setText("https://www.fanfiction.net/s/9669819/1/The-Two-Year-Emperor");
         downloadTextField.setPreferredSize(new java.awt.Dimension(232, 20));
         downloadTextField.setSelectionEnd(45);
         downloadTextField.setSelectionStart(45);
@@ -435,6 +435,9 @@ public class FDA extends javax.swing.JFrame {
                     java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
             }
+            // create our jframe
+            JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+            JOptionPane.showMessageDialog(frame, "Fan Fiction Downloads Complete", "FDA", JOptionPane.INFORMATION_MESSAGE);
 
             //} catch (java.io.IOException ex) {
             //    java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
