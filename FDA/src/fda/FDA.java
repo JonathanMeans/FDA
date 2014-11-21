@@ -1,13 +1,8 @@
 
 package fda;
 
-import org.jsoup.Jsoup;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -84,7 +79,7 @@ public class FDA extends javax.swing.JFrame {
             }
         });
 
-        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 2 month"}));
+        timerangeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Time Range:All", "Updated within 1 week", "Updated within 1 month", "Updated within 6 months"}));
         timerangeComboBox.setToolTipText("Time Range Options");
         timerangeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -335,14 +330,11 @@ public class FDA extends javax.swing.JFrame {
     public int selection = Integer.MAX_VALUE;
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO Search button:
-
         // validateURL validURl = new validateURL();
         String url = searchTextField.getText();
         if (UrlType.FANDOM== checkUrl(url))
         {
-
-            fanficJFrame frame = null;
+            fanficJFrame frame;
             try {
                 System.out.println("Started");
                 frame = new fanficJFrame(url, selection);
@@ -351,8 +343,8 @@ public class FDA extends javax.swing.JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+
         else
         {
             //show error message

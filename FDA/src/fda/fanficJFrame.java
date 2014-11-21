@@ -20,7 +20,6 @@ public class fanficJFrame extends javax.swing.JFrame {
     public fanficJFrame(String url, int numDays) throws IOException {
         //for testing
         //delete this!
-        numDays = 1;
         initComponents(url, numDays);
     }
 
