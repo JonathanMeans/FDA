@@ -47,6 +47,7 @@ public class FandomScraper extends Scraper {
         if (days == Integer.MAX_VALUE) {
             timestamp = 0; //technically, no, but it'll work all the same
         }
+
         Date boundaryDate = new Date(timestamp);
 
         boolean datePassed = false;

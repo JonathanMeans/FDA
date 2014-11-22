@@ -353,8 +353,12 @@ public class FDA extends javax.swing.JFrame {
         if (UrlType.FANDOM== checkUrl(url))
         {
             //do search
-            //TODO: Actually calculate numDays from selection!!
-            int numDays = 0;
+
+            //this stores allows a translation from the date range selected to the number of days to search
+            //ideally this would be refactored so that we only have to change the code in one place
+            //if we want to alter the possible date ranges, but good enough for now
+            int[] daySelection = {Integer.MAX_VALUE, 7, 30, 365 / 2};
+            int numDays = daySelection[timerangeComboBox.getSelectedIndex()];
             try {
                 System.out.println("Started");
                 fanficJFrame frame = new fanficJFrame(url, numDays);
