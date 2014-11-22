@@ -32,8 +32,22 @@ public class fanficJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents(String url, int numDays) throws IOException {
 
-        graphPanel = new javax.swing.JPanel();
+        grathPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        grathTextArea = new javax.swing.JTextArea();
         otherPanel = new javax.swing.JPanel();
+        languageLabel = new javax.swing.JLabel();
+        languageTextField = new javax.swing.JTextField();
+        genresLabel = new javax.swing.JLabel();
+        lotherTextField = new javax.swing.JTextField();
+        wordCntLabel = new javax.swing.JLabel();
+        wordCntTextField = new javax.swing.JTextField();
+        otherLabel = new javax.swing.JLabel();
+        genreTextField = new javax.swing.JTextField();
+        popularityLabel = new javax.swing.JLabel();
+        popularityTextField = new javax.swing.JTextField();
+        writerButton = new javax.swing.JRadioButton();
+        readerRadioButton = new javax.swing.JRadioButton();
         SummaryPanel = new javax.swing.JPanel();
         ratingLabel = new javax.swing.JLabel();
         chaptersLabel = new javax.swing.JLabel();
@@ -42,7 +56,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel = new javax.swing.JLabel();
         followsLabel = new javax.swing.JLabel();
         charactersLabel = new javax.swing.JLabel();
-        genreLabel = new javax.swing.JLabel();
+        pairingsLabel = new javax.swing.JLabel();
         ratingTextField = new javax.swing.JTextField();
         chaptersTextField = new javax.swing.JTextField();
         wordsTextField = new javax.swing.JTextField();
@@ -50,8 +64,10 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesTextField = new javax.swing.JTextField();
         followsTextField = new javax.swing.JTextField();
         characterTextField = new javax.swing.JTextField();
-        genreTextField = new javax.swing.JTextField();
+        paringTextField = new javax.swing.JTextField();
+        summarytextArea = new java.awt.TextArea();
         fanScrollPane = new javax.swing.JScrollPane();
+
         fanficList = new javax.swing.JList();
 
         //initialize required arrays of Fanfics
@@ -61,31 +77,148 @@ public class fanficJFrame extends javax.swing.JFrame {
         System.arraycopy(fics, 0, topFics, 0, separatorIndex);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        graphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
+        grathPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
 
-        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
-        graphPanel.setLayout(graphPanelLayout);
-        graphPanelLayout.setHorizontalGroup(
-            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+        grathTextArea.setColumns(20);
+        grathTextArea.setLineWrap(true);
+        grathTextArea.setRows(5);
+        grathTextArea.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(grathTextArea);
+
+        javax.swing.GroupLayout grathPanelLayout = new javax.swing.GroupLayout(grathPanel);
+        grathPanel.setLayout(grathPanelLayout);
+        grathPanelLayout.setHorizontalGroup(
+                grathPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(grathPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        graphPanelLayout.setVerticalGroup(
-            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+        grathPanelLayout.setVerticalGroup(
+                grathPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(grathPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1)
+                                .addContainerGap())
         );
 
         otherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Other"));
 
+        languageLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        languageLabel.setText("Language");
+
+        genresLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        genresLabel.setText("Genres");
+
+        lotherTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lotherTextFieldActionPerformed(evt);
+            }
+        });
+
+        wordCntLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        wordCntLabel.setText("Word count");
+
+        wordCntTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wordCntTextFieldActionPerformed(evt);
+            }
+        });
+
+        otherLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        otherLabel.setText("Other");
+
+        genreTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genreTextFieldActionPerformed(evt);
+            }
+        });
+
+        popularityLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        popularityLabel.setText("Popularity");
+
+        popularityTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popularityTextFieldActionPerformed(evt);
+            }
+        });
+
+        writerButton.setText("Writer_preffered");
+        writerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                writerButtonActionPerformed(evt);
+            }
+        });
+
+        readerRadioButton.setText("Reader_preffered");
+        readerRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readerRadioButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout otherPanelLayout = new javax.swing.GroupLayout(otherPanel);
         otherPanel.setLayout(otherPanelLayout);
         otherPanelLayout.setHorizontalGroup(
-            otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+                otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(otherPanelLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, otherPanelLayout.createSequentialGroup()
+                                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(languageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(languageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(12, 12, 12)
+                                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(genreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(genresLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(14, 14, 14)
+                                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(wordCntTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(otherPanelLayout.createSequentialGroup()
+                                                                .addGap(1, 1, 1)
+                                                                .addComponent(wordCntLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(12, 12, 12))
+                                        .addGroup(otherPanelLayout.createSequentialGroup()
+                                                .addComponent(writerButton)
+                                                .addGap(100, 100, 100)))
+                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(otherPanelLayout.createSequentialGroup()
+                                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(popularityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(popularityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(12, 12, 12)
+                                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(otherLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lotherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(readerRadioButton))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         otherPanelLayout.setVerticalGroup(
-            otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 119, Short.MAX_VALUE)
+                otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(otherPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(languageLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(genresLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(wordCntLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(popularityLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(otherLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(popularityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lotherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(wordCntTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(languageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(genreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(otherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(writerButton)
+                                        .addComponent(readerRadioButton))
+                                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         SummaryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fic Summery"));
@@ -104,15 +237,17 @@ public class fanficJFrame extends javax.swing.JFrame {
 
         charactersLabel.setText("Characters:");
 
-        genreLabel.setText("Genres:");
+        pairingsLabel.setText("Pairings:");
 
-        ratingTextField.setText("");
         ratingTextField.setAutoscrolls(false);
+        ratingTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ratingTextFieldActionPerformed(evt);
+            }
+        });
 
-        chaptersTextField.setText("");
         chaptersTextField.setAutoscrolls(false);
 
-        wordsTextField.setText("");
         wordsTextField.setAutoscrolls(false);
         wordsTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,7 +255,6 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        reviewsTextField.setText("");
         reviewsTextField.setAutoscrolls(false);
         reviewsTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,7 +262,6 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        favoritesTextField.setText("");
         favoritesTextField.setAutoscrolls(false);
         favoritesTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,7 +269,6 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        followsTextField.setText("");
         followsTextField.setAutoscrolls(false);
         followsTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,7 +276,6 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        characterTextField.setText("");
         characterTextField.setAutoscrolls(false);
         characterTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,77 +283,79 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        genreTextField.setText("");
-        genreTextField.setAutoscrolls(false);
-        genreTextField.addActionListener(new java.awt.event.ActionListener() {
+        paringTextField.setAutoscrolls(false);
+        paringTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 paringTextFieldActionPerformed(evt);
             }
         });
-
         javax.swing.GroupLayout SummaryPanelLayout = new javax.swing.GroupLayout(SummaryPanel);
         SummaryPanel.setLayout(SummaryPanelLayout);
         SummaryPanelLayout.setHorizontalGroup(
-            SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SummaryPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ratingLabel)
-                    .addComponent(chaptersLabel)
-                    .addComponent(wordsLabel)
-                    .addComponent(reviewsLabel)
-                    .addComponent(favoritesLabel)
-                    .addComponent(followsLabel)
-                    .addComponent(charactersLabel)
-                    .addComponent(genreLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ratingTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chaptersTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wordsTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(reviewsTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(favoritesTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(followsTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(genreTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(SummaryPanelLayout.createSequentialGroup()
+                                .addComponent(summarytextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(ratingLabel)
+                                        .addComponent(chaptersLabel)
+                                        .addComponent(wordsLabel)
+                                        .addComponent(reviewsLabel)
+                                        .addComponent(favoritesLabel)
+                                        .addComponent(followsLabel)
+                                        .addComponent(charactersLabel)
+                                        .addComponent(pairingsLabel))
+                                .addGap(14, 14, 14)
+                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                        .addComponent(followsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(favoritesTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(reviewsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(wordsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(chaptersTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(ratingTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(paringTextField))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SummaryPanelLayout.setVerticalGroup(
-            SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SummaryPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ratingLabel)
-                    .addComponent(ratingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chaptersLabel)
-                    .addComponent(chaptersTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(wordsLabel)
-                    .addComponent(wordsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(reviewsLabel)
-                    .addComponent(reviewsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(favoritesLabel)
-                    .addComponent(favoritesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(followsLabel)
-                    .addComponent(followsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(charactersLabel)
-                    .addComponent(characterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(genreLabel)
-                    .addComponent(genreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(SummaryPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(SummaryPanelLayout.createSequentialGroup()
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(ratingLabel)
+                                                        .addComponent(ratingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(chaptersLabel)
+                                                        .addComponent(chaptersTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(6, 6, 6)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(wordsLabel)
+                                                        .addComponent(wordsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(13, 13, 13)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(reviewsLabel)
+                                                        .addComponent(reviewsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(favoritesLabel)
+                                                        .addComponent(favoritesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(6, 6, 6)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(followsLabel)
+                                                        .addComponent(followsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(9, 9, 9)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(charactersLabel)
+                                                        .addComponent(characterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(pairingsLabel)
+                                                        .addComponent(paringTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(summarytextArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         ratingLabel.getAccessibleContext().setAccessibleName("Rating");
@@ -230,8 +363,11 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel.getAccessibleContext().setAccessibleName("Favorites");
         followsLabel.getAccessibleContext().setAccessibleName("Follows");
         charactersLabel.getAccessibleContext().setAccessibleName("Characters");
-        genreLabel.getAccessibleContext().setAccessibleName("Genres");
+        pairingsLabel.getAccessibleContext().setAccessibleName("Pairings");
 
+        fanScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Fanfic Title by Author"));
+
+        fanScrollPane.setViewportView(fanficList);
         fanScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Top Fics"));
 
         fanficList.setModel(new javax.swing.AbstractListModel<Fanfic>() {
@@ -277,62 +413,88 @@ public class fanficJFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(otherPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SummaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fanScrollPane))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(grathPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(otherPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(fanScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                                        .addComponent(SummaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SummaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(graphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(otherPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(SummaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(grathPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(otherPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())
         );
 
         pack();
-    }// </editor-fold>                        
-
-    private void reviewsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+    }// </editor-fold>
+    private void reviewsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                                
+    }
 
-    private void wordsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void wordsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                              
+    }
 
-    private void favoritesTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void favoritesTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                                  
+    }
 
-    private void followsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+    private void followsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                                
+    }
 
-    private void characterTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void characterTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                                  
+    }
 
-    private void paringTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                
+    private void paringTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                               
+    }
 
+    private void ratingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
 
-    // Variables declaration - do not modify                     
+    private void readerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void genreTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void wordCntTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void popularityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void lotherTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void writerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    // Variables declaration - do not modify
     private javax.swing.JPanel SummaryPanel;
     private javax.swing.JLabel chaptersLabel;
     private javax.swing.JTextField chaptersTextField;
@@ -344,15 +506,30 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField favoritesTextField;
     private javax.swing.JLabel followsLabel;
     private javax.swing.JTextField followsTextField;
-    private javax.swing.JPanel graphPanel;
-    private javax.swing.JPanel otherPanel;
-    private javax.swing.JLabel genreLabel;
     private javax.swing.JTextField genreTextField;
+    private javax.swing.JLabel genresLabel;
+    private javax.swing.JPanel grathPanel;
+    private javax.swing.JTextArea grathTextArea;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel languageLabel;
+    private javax.swing.JTextField languageTextField;
+    private javax.swing.JTextField lotherTextField;
+    private javax.swing.JLabel otherLabel;
+    private javax.swing.JPanel otherPanel;
+    private javax.swing.JLabel pairingsLabel;
+    private javax.swing.JTextField paringTextField;
+    private javax.swing.JLabel popularityLabel;
+    private javax.swing.JTextField popularityTextField;
     private javax.swing.JLabel ratingLabel;
     private javax.swing.JTextField ratingTextField;
+    private javax.swing.JRadioButton readerRadioButton;
     private javax.swing.JLabel reviewsLabel;
     private javax.swing.JTextField reviewsTextField;
+    private java.awt.TextArea summarytextArea;
+    private javax.swing.JLabel wordCntLabel;
+    private javax.swing.JTextField wordCntTextField;
     private javax.swing.JLabel wordsLabel;
     private javax.swing.JTextField wordsTextField;
+    private javax.swing.JRadioButton writerButton;
     // End of variables declaration                   
 }
