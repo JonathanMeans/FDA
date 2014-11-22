@@ -65,7 +65,8 @@ public class fanficJFrame extends javax.swing.JFrame {
         followsTextField = new javax.swing.JTextField();
         characterTextField = new javax.swing.JTextField();
         paringTextField = new javax.swing.JTextField();
-        summarytextArea = new java.awt.TextArea();
+        summarytextArea = new javax.swing.JTextArea();
+        summarytextArea.setLineWrap(true);
         fanScrollPane = new javax.swing.JScrollPane();
 
         fanficList = new javax.swing.JList();
@@ -144,14 +145,14 @@ public class fanficJFrame extends javax.swing.JFrame {
             }
         });
 
-        writerButton.setText("Writer_preffered");
+        writerButton.setText("Writer_preferred");
         writerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 writerButtonActionPerformed(evt);
             }
         });
 
-        readerRadioButton.setText("Reader_preffered");
+        readerRadioButton.setText("Reader_preferred");
         readerRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 readerRadioButtonActionPerformed(evt);
@@ -388,6 +389,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                 reviewsTextField.setText(Integer.toString(fic.getReviews()));
                 favoritesTextField.setText(Integer.toString(fic.getFavorites()));
                 followsTextField.setText(Integer.toString(fic.getFollows()));
+                summarytextArea.setText(fic.getSummary());
 
                 String charString = fic.getCharacters()[0];
                 for (int i = 1; i < fic.getCharacters().length; ++i) {
@@ -525,7 +527,7 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton readerRadioButton;
     private javax.swing.JLabel reviewsLabel;
     private javax.swing.JTextField reviewsTextField;
-    private java.awt.TextArea summarytextArea;
+    private javax.swing.JTextArea summarytextArea;
     private javax.swing.JLabel wordCntLabel;
     private javax.swing.JTextField wordCntTextField;
     private javax.swing.JLabel wordsLabel;
