@@ -49,7 +49,7 @@ public class FDA extends javax.swing.JFrame {
         DownloadButton = new javax.swing.JButton();
         folderButton = new javax.swing.JButton();
         totalchaptersTextField = new javax.swing.JTextField();
-        totalchaptersLabel = new javax.swing.JLabel();
+        totalchaptersButton = new javax.swing.JButton();
         folderSelecter = new javax.swing.JFileChooser();
         downloadLocationField = new javax.swing.JTextField();
         downloadLocationLabel = new javax.swing.JLabel();
@@ -185,7 +185,8 @@ public class FDA extends javax.swing.JFrame {
                 folderButton1ActionPerformed(evt);
             }
         });
-        totalchaptersLabel.setText("Total Chapters:");
+        //totalchaptersLabel.setText("Total Chapters:");
+        totalchaptersButton.setText("Get total chapters");
         folderSelecter.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         downloadLocationLabel.setText("Location:");
@@ -212,7 +213,7 @@ public class FDA extends javax.swing.JFrame {
                                                 .add(18, 18, 18)
                                                 .add(chapterTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .add(totalchaptersLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .add(totalchaptersButton)
                                                 .add(18, 18, 18)
                                                 .add(totalchaptersTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -238,7 +239,7 @@ public class FDA extends javax.swing.JFrame {
                                         .add(toLabel)
                                         .add(chapterTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .add(totalchaptersTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(totalchaptersLabel))
+                                        .add(totalchaptersButton))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 12, Short.MAX_VALUE)
                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                         .add(downloadLocationLabel)
@@ -360,7 +361,7 @@ public class FDA extends javax.swing.JFrame {
             int[] daySelection = {Integer.MAX_VALUE, 7, 30, 365 / 2};
             int numDays = daySelection[timerangeComboBox.getSelectedIndex()];
             try {
-                System.out.println("Started");
+                //System.out.println("Started");
                 fanficJFrame frame = new fanficJFrame(url, numDays);
                 frame.setVisible(true);
             } catch (IOException e) {
@@ -384,6 +385,9 @@ public class FDA extends javax.swing.JFrame {
             downloadLocationField.setText(folderSelecter.getSelectedFile().toString());
     }
 
+    private void totalchaptersButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
     private void DownloadButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // // TODO download button:
         // validateURL validURl = new validateURL();
@@ -653,7 +657,8 @@ public class FDA extends javax.swing.JFrame {
     private javax.swing.JPanel sortbetaPanel;
     private javax.swing.JComboBox timerangeComboBox;
     private javax.swing.JLabel toLabel;
-    private javax.swing.JLabel totalchaptersLabel;
+    //private javax.swing.JLabel totalchaptersLabel;
+    private javax.swing.JButton totalchaptersButton;
     private javax.swing.JTextField totalchaptersTextField;
     // End of variables declaration
 
