@@ -139,6 +139,8 @@ public class FDA extends javax.swing.JFrame {
         chapterLabel.setText("Chapters:");
         chapterLabel.setToolTipText("");
 
+        totalchaptersTextField.setEditable(false);
+
 //        chapterTextField1.setEditable(false);
         chapterTextField1.setText("1");
 
@@ -186,7 +188,15 @@ public class FDA extends javax.swing.JFrame {
             }
         });
         //totalchaptersLabel.setText("Total Chapters:");
+        totalchaptersButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         totalchaptersButton.setText("Get total chapters");
+        totalchaptersButton.setToolTipText("Display total chapters from the listed URL");
+        totalchaptersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalchaptersButton1ActionPerformed(evt);
+            }
+        });
+
         folderSelecter.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         downloadLocationLabel.setText("Location:");
@@ -385,70 +395,110 @@ public class FDA extends javax.swing.JFrame {
             downloadLocationField.setText(folderSelecter.getSelectedFile().toString());
     }
 
-    private void totalchaptersButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void totalchaptersButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        if (UrlType.FIC == checkUrl(downloadTextField.getText())) {
+            try {
+                Document doc1 = Jsoup.connect(downloadTextField.getText()).get();
+                Elements Opts1 = doc1.select("option");
+                String TCF = "" + (Opts1.size() / 2);
+                totalchaptersTextField.setText(TCF);
+            } catch (java.io.IOException ex) {
+                java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                return;
+            }
+        }
+        else
+        {
+            //show error message
+            String message = "The download fic link is not recognized,\n"
+                    + "please try again.";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
     private void DownloadButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // // TODO download button:
         // validateURL validURl = new validateURL();
         if (UrlType.FIC == checkUrl(downloadTextField.getText()))
         {
-            //do search
-            System.out.println("and here do download");
+            //Check to make sure required fields are is not empty
+            if (downloadLocationField.getText().equals("")) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Download Location Text Box is Empty", "FDA", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if (chapterTextField1.getText().equals("")) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Beginning Chapters Text Box is Empty", "FDA", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if (chapterTextField2.getText().equals("")) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Ending Chapters Text Box is Empty", "FDA", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
 
+            //Set Jsoup Document
             org.jsoup.nodes.Document doc;
-            //try {
-                //doc = org.jsoup.Jsoup.connect(downloadTextField.getText()).get();
-                //String text = doc.body().text();
 
-                String ficName = downloadTextField.getText().substring(downloadTextField.getText().lastIndexOf("/")+1);
-                java.io.File dir = new java.io.File(downloadLocationField.getText()+java.io.File.separator+ficName);
+            //Pull the fic Name to act as a directory name and set the directory
+            String ficName = downloadTextField.getText().substring(downloadTextField.getText().lastIndexOf("/")+1);
+            java.io.File dir = new java.io.File(downloadLocationField.getText()+java.io.File.separator+ficName);
 
-                System.out.println("Downloading to "+dir.getAbsolutePath());
+            //Can remove (Used for testing)
+            System.out.println("Downloading to "+dir.getAbsolutePath());
 
-                if (!dir.exists()) {
-                    try {
-                        dir.mkdir();
-                    } catch (SecurityException se) {
-                        java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, se);
-                        return;  //Save directory couldn't be found or created, abort.
-                    }
-                }
-                // Verify Chapter Numbers
-                int chStart = 0;
-                int chEnd = 0;
+            //Verify if directory exist, if not the create
+            if (!dir.exists()) {
                 try {
-                    chStart = Integer.parseInt(chapterTextField1.getText());
-                } catch (java.lang.NumberFormatException ex) {
-                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-                    JOptionPane.showMessageDialog(frame, "Invalid Beginning Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
-                    chapterTextField1.setText("");
-                    return;
+                    dir.mkdir();
+                } catch (SecurityException se) {
+                    java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, se);
+                    return;  //Save directory couldn't be found or created, abort.
                 }
-                if (chStart == 0) {
-                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-                    JOptionPane.showMessageDialog(frame, "Beginning Chapter Number\ncan not be 0", "FDA", JOptionPane.ERROR_MESSAGE);
-                    chapterTextField1.setText("");
-                    return;
-                }
-                try {
-                    chEnd = Integer.parseInt(chapterTextField2.getText());
-                } catch (java.lang.NumberFormatException ex) {
-                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-                    JOptionPane.showMessageDialog(frame, "Invalid Ending Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
-                    chapterTextField2.setText("");
-                    return;
-                }
-                String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
-                baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
+            }
+            // Verify Chapter Numbers
+            int chStart = 0;
+            int chEnd = 0;
+            try {
+                chStart = Integer.parseInt(chapterTextField1.getText());
+            } catch (java.lang.NumberFormatException ex) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Invalid Beginning Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
+                chapterTextField1.setText("");
+                return;
+            }
+            if (chStart == 0) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Beginning Chapter Number\ncan not be 0", "FDA", JOptionPane.ERROR_MESSAGE);
+                chapterTextField1.setText("");
+                return;
+            }
+            try {
+                chEnd = Integer.parseInt(chapterTextField2.getText());
+            } catch (java.lang.NumberFormatException ex) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Invalid Ending Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
+                chapterTextField2.setText("");
+                return;
+            }
+
+            //Separate the URL to change the chapter number for download
+            String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
+            baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
 
             for (int i=chStart; i<=chEnd; i++) {
                 try {
                     doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
+                    //Pull the required elements
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
                     Elements Opts = doc.select("option");
+                    String TCF = "" + (Opts.size() / 2);
+                    totalchaptersTextField.setText(TCF);
 
+                    //Verify that the ending chapter number is not greater than the total chapters available
                     if (chEnd > Opts.size() / 2) {
                         JFrame frame = new JFrame("JOptionPane showMessageDialog example");
                         JOptionPane.showMessageDialog(frame, "You can not select more then\n" + Opts.size()/2 + " Chapters", "FDA", JOptionPane.ERROR_MESSAGE);
@@ -520,14 +570,9 @@ public class FDA extends javax.swing.JFrame {
                     java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
             }
-            // create our jframe
+            //Inform that downloads are complete
             JFrame frame = new JFrame("JOptionPane showMessageDialog example");
             JOptionPane.showMessageDialog(frame, "Fan Fiction Downloads Complete", "FDA", JOptionPane.INFORMATION_MESSAGE);
-
-            //} catch (java.io.IOException ex) {
-            //    java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            //}
-
         }
         else
         {
