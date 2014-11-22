@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Updated Date: 11/22/2014
+ * Users: Jonathan Means,Karolina Reitz,
+ * Users:Yuwen Huang, Paul Corter
+ * 
  */
 package fda;
 
@@ -19,7 +20,7 @@ import java.lang.NumberFormatException;
 
 public class FDA extends javax.swing.JFrame {
 
-    /** Creates new form FDA */
+    /** Creates new form Antenna */
     public FDA() {
         initComponents();
     }
@@ -47,6 +48,8 @@ public class FDA extends javax.swing.JFrame {
         downloadTextField = new javax.swing.JTextField();
         DownloadButton = new javax.swing.JButton();
         folderButton = new javax.swing.JButton();
+        totalchaptersTextField = new javax.swing.JTextField();
+        totalchaptersLabel = new javax.swing.JLabel();
         folderSelecter = new javax.swing.JFileChooser();
         downloadLocationField = new javax.swing.JTextField();
         downloadLocationLabel = new javax.swing.JLabel();
@@ -57,7 +60,7 @@ public class FDA extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fantastical Data Assistant");
-
+        setResizable(false);
         displayficPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Display the top 10 fics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
         displayficPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -73,9 +76,9 @@ public class FDA extends javax.swing.JFrame {
         searchButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         searchButton.setText("Search");
         searchButton.setToolTipText("Search top 10 fics");
-        searchButton.setMaximumSize(new java.awt.Dimension(79, 23));
-        searchButton.setMinimumSize(new java.awt.Dimension(79, 23));
-        searchButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        searchButton.setMaximumSize(new java.awt.Dimension(85, 23));
+        searchButton.setMinimumSize(new java.awt.Dimension(85, 23));
+        searchButton.setPreferredSize(new java.awt.Dimension(85, 23));
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
@@ -101,25 +104,27 @@ public class FDA extends javax.swing.JFrame {
                                 .add(displayficPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                         .add(displayficPanelLayout.createSequentialGroup()
                                                 .add(searchlinkLabel)
+                                                .add(52, 52, 52)
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .add(searchTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 370, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                         .add(displayficPanelLayout.createSequentialGroup()
                                                 .add(filterLabel)
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .add(timerangeComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 244, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(40, 40, 40)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(searchButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 108, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(searchButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         displayficPanelLayout.setVerticalGroup(
                 displayficPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(displayficPanelLayout.createSequentialGroup()
-                                .add(10, 10, 10)
+                                .add(14, 14, 14)
                                 .add(displayficPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                         .add(searchlinkLabel)
                                         .add(searchButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .add(searchTextField))
-                                .add(9, 9, 9)
+                                .add(14, 14, 14)
                                 .add(displayficPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                         .add(filterLabel)
                                         .add(timerangeComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -165,7 +170,7 @@ public class FDA extends javax.swing.JFrame {
 
         DownloadButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         DownloadButton.setText("Download");
-        DownloadButton.setToolTipText("Download fic");
+        DownloadButton.setToolTipText("Download fic to default C drive");
         DownloadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DownloadButton1ActionPerformed(evt);
@@ -180,7 +185,7 @@ public class FDA extends javax.swing.JFrame {
                 folderButton1ActionPerformed(evt);
             }
         });
-
+        totalchaptersLabel.setText("Total Chapters:");
         folderSelecter.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         downloadLocationLabel.setText("Location:");
@@ -193,48 +198,58 @@ public class FDA extends javax.swing.JFrame {
                         .add(downloadPanelLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(downloadlinkLabel)
+                                        .add(chapterLabel)
+                                        .add(downloadLocationLabel))
+                                .add(46, 46, 46)
+                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(downloadTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(downloadLocationField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .add(downloadPanelLayout.createSequentialGroup()
-                                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                                        .add(chapterLabel)
-                                                        .add(downloadLocationLabel))
-                                                .add(46, 46, 46)
-                                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                                        .add(downloadLocationField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                        .add(chapterTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-                                                .add(12, 12, 12)
-                                                .add(toLabel)
+                                                .add(chapterTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                                        .add(chapterTextField2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
+                                                .add(toLabel)
+                                                .add(18, 18, 18)
+                                                .add(chapterTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .add(totalchaptersLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .add(18, 18, 18)
+                                                .add(totalchaptersTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                         .add(downloadPanelLayout.createSequentialGroup()
-                                                .add(downloadlinkLabel)
+                                                .add(40, 40, 40)
+                                                .add(DownloadButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, downloadPanelLayout.createSequentialGroup()
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(downloadTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 371, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                .add(18, 18, Short.MAX_VALUE)
-                                .add(DownloadButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(folderButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .add(folderButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
         downloadPanelLayout.setVerticalGroup(
                 downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(downloadPanelLayout.createSequentialGroup()
                                 .add(16, 16, 16)
-                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                        .add(downloadlinkLabel)
-                                        .add(downloadTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(DownloadButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                                        .add(downloadTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                                        .add(DownloadButton))
                                 .add(17, 17, 17)
-                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                                .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                                         .add(chapterLabel)
                                         .add(chapterTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(toLabel)
                                         .add(chapterTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(toLabel))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 17, Short.MAX_VALUE)
+                                        .add(totalchaptersTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(totalchaptersLabel))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 12, Short.MAX_VALUE)
                                 .add(downloadPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                        .add(downloadLocationField)
                                         .add(downloadLocationLabel)
-                                        .add(folderButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .add(downloadLocationField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(folderButton)))
+                        .add(org.jdesktop.layout.GroupLayout.CENTER, downloadPanelLayout.createSequentialGroup()
+                                .add(22, 22, 22)
+                                .add(downloadlinkLabel)
+                                .add(77, 77, 77))
         );
+
 
         chapterLabel.getAccessibleContext().setAccessibleName("chapters");
         chapterTextField1.getAccessibleContext().setAccessibleName("");
@@ -262,9 +277,9 @@ public class FDA extends javax.swing.JFrame {
         sortBetasearchButton.setText("Sort");
         sortBetasearchButton.setToolTipText("Sort beata reader");
         sortBetasearchButton.setFocusCycleRoot(true);
-        sortBetasearchButton.setMaximumSize(new java.awt.Dimension(79, 23));
-        sortBetasearchButton.setMinimumSize(new java.awt.Dimension(79, 23));
-        sortBetasearchButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        sortBetasearchButton.setMaximumSize(new java.awt.Dimension(85, 23));
+        sortBetasearchButton.setMinimumSize(new java.awt.Dimension(85, 23));
+        sortBetasearchButton.setPreferredSize(new java.awt.Dimension(85, 23));
         sortBetasearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sortBetasearchButtonActionPerformed(evt);
@@ -634,6 +649,8 @@ public class FDA extends javax.swing.JFrame {
     private javax.swing.JPanel sortbetaPanel;
     private javax.swing.JComboBox timerangeComboBox;
     private javax.swing.JLabel toLabel;
+    private javax.swing.JLabel totalchaptersLabel;
+    private javax.swing.JTextField totalchaptersTextField;
     // End of variables declaration
 
 }
