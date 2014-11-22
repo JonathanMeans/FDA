@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,12 @@ public class FandomScraper extends Scraper {
         List<Fanfic> ficList = new ArrayList<Fanfic>();
         BoundedSortedFics topFicList = new BoundedSortedFics(numTopFics);
 
-        long timestamp = new Date().getTime();// - days * 24 * 60 * 60 * 1000;
+        long timestamp = new Date().getTime();
+
+        //force the calculation to use long to prevent overflow
+        long deltaMillis = days * 24 * 60 * 60;
+        deltaMillis *= 1000;
+        timestamp = timestamp - deltaMillis;
         if (days == Integer.MAX_VALUE) {
             timestamp = 0; //technically, no, but it'll work all the same
         }
@@ -62,7 +68,16 @@ public class FandomScraper extends Scraper {
             }
 
             url = incrementPage(url, currentPage);
-            doc = Jsoup.connect(url).get();
+
+            //sometimes there's a timeout error, so loop here
+            doc = null;
+            while (doc == null) {
+                try {
+                    doc = Jsoup.connect(url).get();
+                } catch (SocketTimeoutException e) {
+                    //Just wait
+                }
+            }
             currentPage++;
         } while (!datePassed && currentPage <= numPages);
 
@@ -116,13 +131,20 @@ public class FandomScraper extends Scraper {
     private static void extractAuthorData(Element story, Fanfic fic) {
         Element authorElement = story.select("a + a").first();
 
-        if (authorElement.attr("href").substring(0, 2).equals("/s")) {
-            //multi-chapter fic. Ignore next link
-            authorElement = story.select("a + a + a").first();
+        //sometimes authors get deleted
+        if (authorElement != null) {
+            if (authorElement.attr("href").substring(0, 2).equals("/s")) {
+                //multi-chapter fic. Ignore next link
+                authorElement = story.select("a + a + a").first();
+            }
+
+            fic.setAuthor(authorElement.text());
+            fic.setAuthorUrl(BASE_URL + authorElement.attr("href"));
+        } else {
+            fic.setAuthor("[deleted]");
+            fic.setAuthorUrl("");
         }
 
-        fic.setAuthor(authorElement.text());
-        fic.setAuthorUrl(BASE_URL + authorElement.attr("href"));
     }
 
     private static void extractSummary(Element story, Fanfic fic) {

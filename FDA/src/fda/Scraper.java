@@ -106,7 +106,7 @@ public class Scraper {
     //This method finds the characters and pairings of a fic
     private static void extractCharactersFromPropertyList(String data, Fanfic fic) {
         //Make sure there -are- actually characters
-        if (data.contains("data-xutime")) { return; } //if there is a character named "data-xutime," I give up.
+        if (data.contains("Published: ")) { return; } //if there is a character named "Published: " I give up.
         String[] characters = new String[4];
         String[][] pairings = new String[2][2];
 

@@ -336,7 +336,6 @@ public class FDA extends javax.swing.JFrame {
         {
             fanficJFrame frame;
             try {
-                System.out.println("Started");
                 frame = new fanficJFrame(url, selection);
                 frame.setVisible(true);
 

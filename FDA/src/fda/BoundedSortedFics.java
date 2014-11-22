@@ -23,21 +23,14 @@ public class BoundedSortedFics {
     public boolean insert(Fanfic fic) {
         //this strategy isn't going to work when there are less than the overflow number number of fics
         //that's unlikely to happen, though, so we'll leave it for now.
-        if (index < maxSize) {
+        if (index == 0) {
             list[index] = fic;
             index++;
             return true;
         }
 
-        if (index == maxSize) {
-            Arrays.sort(list);
-
-            //reverse array
-            for (int i = 0; i < list.length / 2; ++i) {
-                Fanfic temp = list[i];
-                list[i] = list[list.length - i - 1];
-                list[list.length - i - 1] = temp;
-            }
+        if (index < maxSize) {
+            actuallyInsert(fic);
             index++;
             return true;
         }
@@ -53,12 +46,12 @@ public class BoundedSortedFics {
     }
 
     private void actuallyInsert(Fanfic fic) {
-        int location = list.length - 1;
+        int location = Math.min(index, list.length - 1);
 
-        while (location > 0 && fic.compareTo(list[location]) >= 0) {
+        while (location > 0 && fic.compareTo(list[location - 1]) >= 0) {
             list[location] = list[location - 1];
             location--;
-            }
+        }
 
         list[location] = fic;
     }

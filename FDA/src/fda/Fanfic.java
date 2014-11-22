@@ -88,7 +88,11 @@ public class Fanfic implements Comparable<Fanfic> {
     private double popularity;
 
     public Fanfic() {
-        //nothing happens
+        characters = new String[1];
+        characters[0] = "None";
+
+        genres = new String[1];
+        genres[0] = "None";
     }
 
     public void setPairings(String[][] pairings) {
@@ -165,7 +169,9 @@ public class Fanfic implements Comparable<Fanfic> {
 
     public double getPopularity() {
         if (popularity == 0) {
-            popularity = favorites / Math.log((new Date().getTime() - updatedDate.getTime() / 1000 / 60 / 60 / 24 + 2));
+            long elapsedTime = (new Date().getTime() - updatedDate.getTime()) / 1000 / 60 / 60 / 24 + 2;
+            elapsedTime = Math.min(elapsedTime, 30);
+            popularity = favorites / Math.log(elapsedTime / 1000 + 2); //extra thousand for scaling
             //2 is added to pre-emptively prevent division by 0
         }
         return  popularity;
@@ -181,6 +187,6 @@ public class Fanfic implements Comparable<Fanfic> {
     }
 
     public String toString() {
-        return title + " by " + author;
+        return title + " by " + author + " | " + getPopularity();
     }
 }

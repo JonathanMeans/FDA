@@ -239,7 +239,7 @@ public class fanficJFrame extends javax.swing.JFrame {
             public int getSize() { return fics.length; }
             public Fanfic getElementAt(int i) { return fics[i]; }
         });
-        System.out.println("Model set!");
+
         fanScrollPane.setViewportView(fanficList);
         fanficList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fanficList.addListSelectionListener(new ListSelectionListener() {
