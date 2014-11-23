@@ -498,6 +498,16 @@ public class FDA extends javax.swing.JFrame {
                     String TCF = "" + (Opts.size() / 2);
                     totalchaptersTextField.setText(TCF);
 
+                    //Remove Authors Notes Supplemental
+                    String strPara = "" + para;
+                    int locPara = strPara.indexOf("Author's note, supplemental");
+                    if (locPara == -1) {
+                        locPara = strPara.indexOf("Author's Note, supplemental");
+                    }
+                    if (locPara > 0) {
+                        strPara = strPara.substring(0,locPara);
+                    }
+
                     //Verify that the ending chapter number is not greater than the total chapters available
                     if (chEnd > Opts.size() / 2) {
                         JFrame frame = new JFrame("JOptionPane showMessageDialog example");
@@ -512,6 +522,12 @@ public class FDA extends javax.swing.JFrame {
                     String prevTitle = "";
                     String pageTitle = Opts.get(i-1).text();
                     pageTitle = "Chapter " + pageTitle.replace(".",":");
+
+                    if (i == 1) {
+                        prevTitle = Opts.last().text();
+                        prevTitle = prevTitle.replace(". ","_");
+                        prevTitle = prevTitle.replace(" ","_") + ".html";
+                    }
 
                     if (i > 1) {
                         prevTitle = Opts.get(i-2).text();
@@ -554,9 +570,9 @@ public class FDA extends javax.swing.JFrame {
                             + "</style>\n"
                             + "<body>\n"
                             + "<center><h3>" + pageTitle + "</h3></center>\n"
-                            + para + "\n";
+                            + strPara + "\n";
                     if (i == 1) {
-                        text = text+ "<center><a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n";  //Next link only for first page
+                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.last().text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n"; //Previous and Next Links
                     } else {
                         text = text + "<center><a href='" + prevTitle + "'>" + Opts.get(i-2).text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n"; //Previous and Next Links
                     }
