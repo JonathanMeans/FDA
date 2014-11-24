@@ -1,10 +1,11 @@
 package fda;
 
-import java.util.Arrays;
 
 /**
  * Class for easy storage and maintenance of top Fanfics
+ * Author: Jonathan Means
  */
+
 //This would be better as a heap, if there's time
 public class BoundedSortedFics {
     private Fanfic[] list;
@@ -21,8 +22,6 @@ public class BoundedSortedFics {
     //premature optimization, is evil, I don't want to build a heap right now, etc.
     //Nothing wrong with linear time.
     public boolean insert(Fanfic fic) {
-        //this strategy isn't going to work when there are less than the overflow number number of fics
-        //that's unlikely to happen, though, so we'll leave it for now.
         if (index == 0) {
             list[index] = fic;
             index++;

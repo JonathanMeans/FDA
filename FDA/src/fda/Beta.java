@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * This class represents a FanFiction Beta Reader.
+ * Author: Karolina Reitz
  */
 public class Beta {
 	private String name = "";

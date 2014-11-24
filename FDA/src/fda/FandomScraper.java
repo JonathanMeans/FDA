@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Subclass of Scraper
  * Contains method specific to scraping relevant information from fandom pages
+ * Author: Jonathan Means
  */
 public class FandomScraper extends Scraper {
 

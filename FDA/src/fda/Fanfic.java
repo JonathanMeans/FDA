@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * This class represents a fic
  * Methods include setters and getters for each field
+ * Author: Jonathan Means
  */
 public class Fanfic implements Comparable<Fanfic> {
     private String title;

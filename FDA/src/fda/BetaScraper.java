@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 /**
  * This class scrapes Beta Reader information from FanFiction.net and creates
  * Beta objects.
+ * Author: Karolina Reitz
  */
 public class BetaScraper extends Scraper {
 	public static final String FANFICTION_BASE_URL = "https://www.fanfiction.net/";

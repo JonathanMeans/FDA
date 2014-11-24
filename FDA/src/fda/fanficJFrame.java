@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * GUI for displaying the results of a fandom search.
+ * Authors: Yuwen Huang, Jonathan Means
  */
 package fda;
 

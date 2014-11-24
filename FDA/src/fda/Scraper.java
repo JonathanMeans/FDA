@@ -7,6 +7,7 @@ import java.util.*;
  * This class is for extracting relevant information from fanfiction.net
  * Static methods only
  * Should never be instantiated
+ * Author: Jonathan Means
  */
 public class Scraper {
 
