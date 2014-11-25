@@ -13,12 +13,18 @@ import org.jsoup.select.Elements;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.*;
+
 import java.lang.NumberFormatException;
 
 public class FDA extends javax.swing.JFrame {
+	private static final Logger logger = Logger.getLogger(FDA.class.getName());
 
     /** Creates new form Antenna */
     public FDA() {
@@ -617,10 +623,22 @@ public class FDA extends javax.swing.JFrame {
         // validateURL validURl = new validateURL();
         // testing:
         betaScrollPane.setVisible(false);
-        if (UrlType.BETA == checkUrl(sortBetaTextField.getText()))
+        String url = sortBetaTextField.getText();
+        if (UrlType.BETA == checkUrl(url))
         {
-            //do sort beta
-            System.out.println("and here do sorting");
+            
+            try {
+            	List<Beta> betas = BetaScraper.extractBetas(url);
+            	StringBuffer buffer = new StringBuffer();
+            	for(Beta beta : betas) {
+            		buffer.append(beta.getName() + " (" + beta.getNumStories() + ") " +  beta.getBetaUrl() + "\n");
+            	}
+            	betaTextArea.setText(buffer.toString());
+            } catch(IOException ioe) {
+            	logger.log(Level.SEVERE, "Error scraping betas from " + url, ioe);
+            }
+            
+            
             betaScrollPane.setVisible(true);
 
         }

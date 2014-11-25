@@ -73,7 +73,7 @@ public class BetaScraper extends Scraper {
 			Element betaLink = betaCell.child(0);
 			String betaHref = betaLink.attr("href");
 			Beta beta = new Beta();
-			beta.setBetaUrl(FANFICTION_BASE_URL + betaHref);
+			beta.setBetaUrl(FANFICTION_BASE_URL + betaHref.substring(1));
 			
 			String[] tokens = betaHref.split("\\/");
 			if(tokens.length < 3) {
