@@ -64,6 +64,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         languageRTextField = new javax.swing.JTextField();
         summarytextArea = new javax.swing.JTextArea(500, 100);
         summarytextArea.setLineWrap(true);
+        summarytextArea.setWrapStyleWord(true);
         fanScrollPane = new javax.swing.JScrollPane();
 
         fanficList = new javax.swing.JList();
@@ -232,7 +233,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         SummaryPanelLayout.setHorizontalGroup(
                 SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(SummaryPanelLayout.createSequentialGroup()
-                                .addComponent(summarytextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(summarytextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 500, 500)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(ratingLabel)
@@ -245,7 +246,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                                         .addComponent( languageRLabel))
                                 .addGap(14, 14, 14)
                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                        .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                                         .addComponent(followsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(favoritesTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(reviewsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
