@@ -17,8 +17,6 @@ public class fanficJFrame extends javax.swing.JFrame {
      * Creates new form fanficJFrame
      */
     public fanficJFrame(String url, int numDays) throws IOException {
-        //for testing
-        //delete this!
         initComponents(url, numDays);
     }
 
@@ -31,9 +29,9 @@ public class fanficJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents(String url, int numDays) throws IOException {
 
-        grathPanel = new javax.swing.JPanel();
+        graphPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grathTextArea = new javax.swing.JTextArea();
+        graphTextArea = new javax.swing.JTextArea();
         otherPanel = new javax.swing.JPanel();
         languageLabel = new javax.swing.JLabel();
         languageTextField = new javax.swing.JTextField();
@@ -64,7 +62,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         followsTextField = new javax.swing.JTextField();
         characterTextField = new javax.swing.JTextField();
         paringTextField = new javax.swing.JTextField();
-        summarytextArea = new javax.swing.JTextArea();
+        summarytextArea = new javax.swing.JTextArea(500, 100);
         summarytextArea.setLineWrap(true);
         fanScrollPane = new javax.swing.JScrollPane();
 
@@ -77,28 +75,28 @@ public class fanficJFrame extends javax.swing.JFrame {
         System.arraycopy(fics, 0, topFics, 0, separatorIndex);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        grathPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
+        graphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
 
-        grathTextArea.setColumns(20);
-        grathTextArea.setLineWrap(true);
-        grathTextArea.setRows(5);
-        grathTextArea.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(grathTextArea);
+        graphTextArea.setColumns(20);
+        graphTextArea.setLineWrap(true);
+        graphTextArea.setRows(5);
+        graphTextArea.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(graphTextArea);
 
-        javax.swing.GroupLayout grathPanelLayout = new javax.swing.GroupLayout(grathPanel);
-        grathPanel.setLayout(grathPanelLayout);
-        grathPanelLayout.setHorizontalGroup(
-                grathPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(grathPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
+        graphPanel.setLayout(graphPanelLayout);
+        graphPanelLayout.setHorizontalGroup(
+                graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(graphPanelLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        grathPanelLayout.setVerticalGroup(
-                grathPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(grathPanelLayout.createSequentialGroup()
+        graphPanelLayout.setVerticalGroup(
+                graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(graphPanelLayout.createSequentialGroup()
                                 .addComponent(jScrollPane1)
                                 .addContainerGap())
         );
@@ -221,7 +219,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        SummaryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fic Summery"));
+        SummaryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fic Summary"));
 
         ratingLabel.setText("Rating:");
 
@@ -418,7 +416,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(grathPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(graphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(otherPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -435,7 +433,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(SummaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(grathPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(otherPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
@@ -509,8 +507,8 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField followsTextField;
     private javax.swing.JTextField genreTextField;
     private javax.swing.JLabel genresLabel;
-    private javax.swing.JPanel grathPanel;
-    private javax.swing.JTextArea grathTextArea;
+    private javax.swing.JPanel graphPanel;
+    private javax.swing.JTextArea graphTextArea;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel languageLabel;
     private javax.swing.JTextField languageTextField;

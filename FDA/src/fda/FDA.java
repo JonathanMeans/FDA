@@ -394,6 +394,8 @@ public class FDA extends javax.swing.JFrame {
                 fanficJFrame frame = new fanficJFrame(url, numDays);
                 frame.setVisible(true);
             } catch (IOException e) {
+                String message = "This does not appear to lead to a valid fandom. Please try again.";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
                 //TODO: display error message
             }
             System.out.println("and here do search");
