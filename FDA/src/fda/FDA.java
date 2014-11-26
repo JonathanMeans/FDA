@@ -441,9 +441,28 @@ public class FDA extends javax.swing.JFrame {
     private void DownloadButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // // TODO download button:
         // validateURL validURl = new validateURL();
-        if (UrlType.FIC == checkUrl(downloadTextField.getText()))
-        {
-            //Check to make sure required fields are is not empty
+        //Verify URL and run download script if good
+        if (UrlType.FIC == checkUrl(downloadTextField.getText())) {
+
+            //Set Variables
+            int chStart = 0;
+            int chEnd = 0;
+            String prevTitle = "";
+            String nextTitle = "";
+            String filenameTitle = "";
+
+            //Set Jsoup Document
+            org.jsoup.nodes.Document doc;
+
+            //Separate the URL to change the chapter number for download
+            String baseAddress = downloadTextField.getText().substring(0, downloadTextField.getText().lastIndexOf("/") - 1);
+            baseAddress = baseAddress.substring(0, baseAddress.lastIndexOf("/")) + "/";
+
+            //Pull the fic Name to act as a directory name and set the directory
+            String ficName = downloadTextField.getText().substring(downloadTextField.getText().lastIndexOf("/") + 1);
+            java.io.File dir = new java.io.File(downloadLocationField.getText() + java.io.File.separator + ficName);
+
+            //Check to make sure required fields are not empty
             if (downloadLocationField.getText().equals("")) {
                 JFrame frame = new JFrame("JOptionPane showMessageDialog example");
                 JOptionPane.showMessageDialog(frame, "Download Location Text Box is Empty", "FDA", JOptionPane.INFORMATION_MESSAGE);
@@ -460,17 +479,7 @@ public class FDA extends javax.swing.JFrame {
                 return;
             }
 
-            //Set Jsoup Document
-            org.jsoup.nodes.Document doc;
-
-            //Pull the fic Name to act as a directory name and set the directory
-            String ficName = downloadTextField.getText().substring(downloadTextField.getText().lastIndexOf("/")+1);
-            java.io.File dir = new java.io.File(downloadLocationField.getText()+java.io.File.separator+ficName);
-
-            //Can remove (Used for testing)
-            System.out.println("Downloading to "+dir.getAbsolutePath());
-
-            //Verify if directory exist, if not the create
+            //Verify if directory exist, if not then create
             if (!dir.exists()) {
                 try {
                     dir.mkdir();
@@ -479,20 +488,13 @@ public class FDA extends javax.swing.JFrame {
                     return;  //Save directory couldn't be found or created, abort.
                 }
             }
+
             // Verify Chapter Numbers
-            int chStart = 0;
-            int chEnd = 0;
             try {
                 chStart = Integer.parseInt(chapterTextField1.getText());
             } catch (java.lang.NumberFormatException ex) {
                 JFrame frame = new JFrame("JOptionPane showMessageDialog example");
                 JOptionPane.showMessageDialog(frame, "Invalid Beginning Chapter Number", "FDA", JOptionPane.ERROR_MESSAGE);
-                chapterTextField1.setText("");
-                return;
-            }
-            if (chStart == 0) {
-                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-                JOptionPane.showMessageDialog(frame, "Beginning Chapter Number\ncan not be 0", "FDA", JOptionPane.ERROR_MESSAGE);
                 chapterTextField1.setText("");
                 return;
             }
@@ -504,20 +506,89 @@ public class FDA extends javax.swing.JFrame {
                 chapterTextField2.setText("");
                 return;
             }
+            if (chStart == 0 || chStart > chEnd) {
+                JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                JOptionPane.showMessageDialog(frame, "Beginning Chapter Number\ncan not be 0\n or greater then the Ending Chapter", "FDA", JOptionPane.ERROR_MESSAGE);
+                chapterTextField1.setText("");
+                return;
+            }
 
-            //Separate the URL to change the chapter number for download
-            String baseAddress = downloadTextField.getText().substring(0,downloadTextField.getText().lastIndexOf("/")-1);
-            baseAddress = baseAddress.substring(0,baseAddress.lastIndexOf("/")) + "/";
+            //Verify end Chapter number does not go beyond available chapters
+            try {
+                doc = Jsoup.connect(baseAddress + 1 + "/" + ficName).get();
+                Elements Opts = doc.select("option"); //Pull the required elements(Chapters)
+                //Verify that the ending chapter number is not greater than the total chapters available
+                if (chStart > Opts.size() / 2) {
+                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                    JOptionPane.showMessageDialog(frame, "You can not select more than\n" + Opts.size() / 2 + " Chapters\nFor Chapter Start", "FDA", JOptionPane.ERROR_MESSAGE);
+                    chapterTextField1.setText("");
+                    return;
+                }
+                if (chEnd > Opts.size() / 2) {
+                    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+                    JOptionPane.showMessageDialog(frame, "You can not select more than\n" + Opts.size() / 2 + " Chapters\nFor Chapter End", "FDA", JOptionPane.ERROR_MESSAGE);
+                    chapterTextField2.setText("");
+                    return;
+                }
+            } catch (java.io.IOException ex) {
+                java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
 
-            for (int i=chStart; i<=chEnd; i++) {
+            //Find out what files are already created
+            int[] fileFound;
+            try {
+                Document doc1 = Jsoup.connect(downloadTextField.getText()).get();
+                Elements Opts1 = doc1.select("option");
+                String TCF = "" + (Opts1.size() / 2); //Get the total chapter count
+                totalchaptersTextField.setText(TCF); //Label the total chapter count field.  A little redundant but here to make sure it populates
+                fileFound = new int[(Opts1.size()/2)];
+                for (int x = 0; x <=(Opts1.size() / 2) - 1; x++) {
+                    fileFound[x] = 0; //Set to 0, meaning no file.
+                }
+                for (int checkFile = 0; checkFile <=(Opts1.size() / 2)-1; checkFile++) {
+                    String checkTitle = Opts1.get(checkFile).text();
+                    checkTitle = checkTitle.replace("'", "");
+                    checkTitle = checkTitle.replace("?", "");
+                    checkTitle = checkTitle.replace(". ", "_");
+                    checkTitle = checkTitle.replace(" ", "_") + ".html";
+                    checkTitle = (dir + java.io.File.separator + checkTitle);
+                    java.io.File f = new java.io.File(checkTitle);
+                    if (f.exists()) {
+                        fileFound[checkFile] = 1;  //Set to 1 if file already exists
+                    }
+                }
+
+            } catch (java.io.IOException ex) {
+                java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                return;
+            }
+
+            //Check what files exists before and after the chapter numbers.
+            //Change numbers if necessary
+            if (chStart > 1) {
+                for (int findStart = chStart - 1; findStart >= 1; findStart--) {
+                    if (fileFound[findStart - 1] == 0) {
+                        break;
+                    } else {
+                        chStart = findStart;
+                    }
+                }
+            }
+            for (int findEnd = chEnd + 1; findEnd <= fileFound.length; findEnd++) {
+                if (fileFound[findEnd - 1] == 0) {
+                    break;
+                } else {
+                    chEnd = findEnd;
+                }
+            }
+            //Pull data with new chStart and chEnd
+            for (int i = chStart; i <= chEnd; i++) {
                 try {
                     doc = Jsoup.connect(baseAddress + i + "/" + ficName).get();
                     //Pull the required elements
                     Elements para = doc.select("p");
                     Elements ficTitle = doc.select("title");
                     Elements Opts = doc.select("option");
-                    String TCF = "" + (Opts.size() / 2);
-                    totalchaptersTextField.setText(TCF);
 
                     //Remove Authors Notes Supplemental
                     String strPara = "" + para;
@@ -526,43 +597,35 @@ public class FDA extends javax.swing.JFrame {
                         locPara = strPara.indexOf("Author's Note, supplemental");
                     }
                     if (locPara > 0) {
-                        strPara = strPara.substring(0,locPara);
-                    }
-
-                    //Verify that the ending chapter number is not greater than the total chapters available
-                    if (chEnd > Opts.size() / 2) {
-                        JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-                        JOptionPane.showMessageDialog(frame, "You can not select more then\n" + Opts.size()/2 + " Chapters", "FDA", JOptionPane.ERROR_MESSAGE);
-                        chapterTextField2.setText("");
-                        return;
+                        strPara = strPara.substring(0, locPara);
                     }
 
                     String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
-                    String textTitle = ficTitle.text(); //Use the web page title as a document title
-                    //Get Titles and Filename
-                    String prevTitle = "";
-                    String pageTitle = Opts.get(i-1).text();
-                    pageTitle = "Chapter " + pageTitle.replace(".",":");
+                    text = text + ficTitle.text(); //Use the web page title as a document title
 
-                    if (i == 1) {
-                        prevTitle = Opts.last().text();
-                        prevTitle = prevTitle.replace(". ","_");
-                        prevTitle = prevTitle.replace(" ","_") + ".html";
-                    }
+                    //Get Titles and Filename
+                    String pageTitle = Opts.get(i - 1).text();
+                    pageTitle = "Chapter " + pageTitle.replace(".", ":");
 
                     if (i > 1) {
-                        prevTitle = Opts.get(i-2).text();
-                        prevTitle = prevTitle.replace(". ","_");
-                        prevTitle = prevTitle.replace(" ","_") + ".html";
+                        prevTitle = Opts.get(i - 2).text();
+                        prevTitle = prevTitle.replace(". ", "_");
+                        prevTitle = prevTitle.replace("?", "");
+                        prevTitle = prevTitle.replace("'", "");
+                        prevTitle = prevTitle.replace(" ", "_") + ".html";
                     }
 
-                    String filenameTitle = Opts.get(i-1).text();
-                    filenameTitle = filenameTitle.replace(". ","_");
-                    filenameTitle = filenameTitle.replace(" ","_") + ".html";
+                    filenameTitle = Opts.get(i - 1).text();
+                    filenameTitle = filenameTitle.replace(". ", "_");
+                    filenameTitle = filenameTitle.replace("?", "");
+                    filenameTitle = filenameTitle.replace("'", "");
+                    filenameTitle = filenameTitle.replace(" ", "_") + ".html";
 
-                    String nextTitle = Opts.get(i).text();
-                    nextTitle = nextTitle.replace(". ","_");
-                    nextTitle = nextTitle.replace(" ","_") + ".html";
+                    nextTitle = Opts.get(i).text();
+                    nextTitle = nextTitle.replace(". ", "_");
+                    nextTitle = nextTitle.replace("?", "");
+                    nextTitle = nextTitle.replace("'", "");
+                    nextTitle = nextTitle.replace(" ", "_") + ".html";
 
                     //Setup web page
                     text = text + "<style type='text/css'>\n"
@@ -592,13 +655,18 @@ public class FDA extends javax.swing.JFrame {
                             + "<body>\n"
                             + "<center><h3>" + pageTitle + "</h3></center>\n"
                             + strPara + "\n";
-                    if (i == 1) {
-                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.last().text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n"; //Previous and Next Links
-                    } else {
-                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.get(i-2).text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a>\n"; //Previous and Next Links
+                    if (chStart == chEnd) {
+                        text = text + "\n"; //No Links
+                    } else if (i == 1 || i == chStart) {
+                        text = text + "<center><a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a></center>\n"; //Next Link
+                    } else if (i > 1 && i > chStart && i < chEnd) {
+                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.get(i - 2).text() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + nextTitle + "'>" + Opts.get(i).text() + "</a></center>\n"; //Previous and Next Links
+                    } else if (i == chEnd) {
+                        text = text + "<center><a href='" + prevTitle + "'>" + Opts.get(i - 2).text() + "</a></center>\n"; //Previous Link
                     }
-                    text = text + "</br></br><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
-                    java.io.File chapter = new java.io.File(dir+java.io.File.separator + filenameTitle);
+
+                    text = text + "</br></br><center><a href='" + baseAddress + i + "/" + ficName + "' target=_blank>Original Web Page</a></center></br>\n"; //Link to original website
+                    java.io.File chapter = new java.io.File(dir + java.io.File.separator + filenameTitle);
 
                     FileWriter oStream = new FileWriter(chapter);
                     oStream.write(text);
@@ -607,6 +675,7 @@ public class FDA extends javax.swing.JFrame {
                     java.util.logging.Logger.getLogger(FDA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
             }
+
             //Inform that downloads are complete
             JFrame frame = new JFrame("JOptionPane showMessageDialog example");
             JOptionPane.showMessageDialog(frame, "Fan Fiction Downloads Complete", "FDA", JOptionPane.INFORMATION_MESSAGE);
