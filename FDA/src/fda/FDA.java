@@ -152,11 +152,11 @@ public class FDA extends javax.swing.JFrame {
         totalchaptersTextField.setEditable(false);
 
 //        chapterTextField1.setEditable(false);
-        chapterTextField1.setText("1");
+//        chapterTextField1.setText("1");
 
         toLabel.setText("To:");
 
-        chapterTextField2.setText("1");
+//        chapterTextField2.setText("1");
 
         downloadlinkLabel.setText("Fic URL:");
 
