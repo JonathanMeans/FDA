@@ -53,7 +53,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel = new javax.swing.JLabel();
         followsLabel = new javax.swing.JLabel();
         charactersLabel = new javax.swing.JLabel();
-        pairingsLabel = new javax.swing.JLabel();
+         languageRLabel = new javax.swing.JLabel();
         ratingTextField = new javax.swing.JTextField();
         chaptersTextField = new javax.swing.JTextField();
         wordsTextField = new javax.swing.JTextField();
@@ -61,7 +61,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesTextField = new javax.swing.JTextField();
         followsTextField = new javax.swing.JTextField();
         characterTextField = new javax.swing.JTextField();
-        paringTextField = new javax.swing.JTextField();
+        languageRTextField = new javax.swing.JTextField();
         summarytextArea = new javax.swing.JTextArea(500, 100);
         summarytextArea.setLineWrap(true);
         fanScrollPane = new javax.swing.JScrollPane();
@@ -109,52 +109,18 @@ public class fanficJFrame extends javax.swing.JFrame {
         genresLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
         genresLabel.setText("Genres");
 
-        lotherTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lotherTextFieldActionPerformed(evt);
-            }
-        });
-
         wordCntLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
         wordCntLabel.setText("Word count");
-
-        wordCntTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wordCntTextFieldActionPerformed(evt);
-            }
-        });
 
         otherLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
         otherLabel.setText("Other");
 
-        genreTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                genreTextFieldActionPerformed(evt);
-            }
-        });
-
         popularityLabel.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
         popularityLabel.setText("Popularity");
 
-        popularityTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                popularityTextFieldActionPerformed(evt);
-            }
-        });
-
         writerButton.setText("Writer_preferred");
-        writerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                writerButtonActionPerformed(evt);
-            }
-        });
 
         readerRadioButton.setText("Reader_preferred");
-        readerRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                readerRadioButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout otherPanelLayout = new javax.swing.GroupLayout(otherPanel);
         otherPanel.setLayout(otherPanelLayout);
@@ -235,58 +201,32 @@ public class fanficJFrame extends javax.swing.JFrame {
 
         charactersLabel.setText("Characters:");
 
-        pairingsLabel.setText("Pairings:");
+        languageRLabel.setText("Language:");
 
         ratingTextField.setAutoscrolls(false);
-        ratingTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ratingTextFieldActionPerformed(evt);
-            }
-        });
+        ratingTextField.setEditable(false);
 
         chaptersTextField.setAutoscrolls(false);
+        characterTextField.setEditable(false);
 
         wordsTextField.setAutoscrolls(false);
-        wordsTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wordsTextFieldActionPerformed(evt);
-            }
-        });
+        wordsTextField.setEditable(false);
 
         reviewsTextField.setAutoscrolls(false);
-        reviewsTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reviewsTextFieldActionPerformed(evt);
-            }
-        });
+        reviewsTextField.setEditable(false);
 
         favoritesTextField.setAutoscrolls(false);
-        favoritesTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                favoritesTextFieldActionPerformed(evt);
-            }
-        });
+        favoritesTextField.setEditable(false);
 
         followsTextField.setAutoscrolls(false);
-        followsTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                followsTextFieldActionPerformed(evt);
-            }
-        });
+        followsTextField.setEditable(false);
 
         characterTextField.setAutoscrolls(false);
-        characterTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                characterTextFieldActionPerformed(evt);
-            }
-        });
+        characterTextField.setEditable(false);
 
-        paringTextField.setAutoscrolls(false);
-        paringTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                paringTextFieldActionPerformed(evt);
-            }
-        });
+        languageRTextField.setAutoscrolls(false);
+        languageTextField.setEditable(false);
+
         javax.swing.GroupLayout SummaryPanelLayout = new javax.swing.GroupLayout(SummaryPanel);
         SummaryPanel.setLayout(SummaryPanelLayout);
         SummaryPanelLayout.setHorizontalGroup(
@@ -302,7 +242,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                                         .addComponent(favoritesLabel)
                                         .addComponent(followsLabel)
                                         .addComponent(charactersLabel)
-                                        .addComponent(pairingsLabel))
+                                        .addComponent( languageRLabel))
                                 .addGap(14, 14, 14)
                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
@@ -312,7 +252,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                                         .addComponent(wordsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(chaptersTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(ratingTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(paringTextField))
+                                        .addComponent(languageRTextField))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SummaryPanelLayout.setVerticalGroup(
@@ -350,8 +290,8 @@ public class fanficJFrame extends javax.swing.JFrame {
                                                         .addComponent(characterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(pairingsLabel)
-                                                        .addComponent(paringTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent( languageRLabel)
+                                                        .addComponent(languageRTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addComponent(summarytextArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -361,7 +301,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel.getAccessibleContext().setAccessibleName("Favorites");
         followsLabel.getAccessibleContext().setAccessibleName("Follows");
         charactersLabel.getAccessibleContext().setAccessibleName("Characters");
-        pairingsLabel.getAccessibleContext().setAccessibleName("Pairings");
+         languageRLabel.getAccessibleContext().setAccessibleName("Pairings");
 
         fanScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Fanfic Title by Author"));
 
@@ -387,6 +327,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                 favoritesTextField.setText(Integer.toString(fic.getFavorites()));
                 followsTextField.setText(Integer.toString(fic.getFollows()));
                 summarytextArea.setText(fic.getSummary());
+                languageRTextField.setText(fic.getLanguage());
 
                 String charString = fic.getCharacters()[0];
                 for (int i = 1; i < fic.getCharacters().length; ++i) {
@@ -441,57 +382,6 @@ public class fanficJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-    private void reviewsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void wordsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void favoritesTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void followsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void characterTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void paringTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void ratingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void readerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void genreTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void wordCntTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void popularityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void lotherTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void writerButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     // Variables declaration - do not modify
     private javax.swing.JPanel SummaryPanel;
@@ -515,8 +405,8 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField lotherTextField;
     private javax.swing.JLabel otherLabel;
     private javax.swing.JPanel otherPanel;
-    private javax.swing.JLabel pairingsLabel;
-    private javax.swing.JTextField paringTextField;
+    private javax.swing.JLabel  languageRLabel;
+    private javax.swing.JTextField languageRTextField;
     private javax.swing.JLabel popularityLabel;
     private javax.swing.JTextField popularityTextField;
     private javax.swing.JLabel ratingLabel;
