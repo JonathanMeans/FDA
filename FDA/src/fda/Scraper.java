@@ -111,7 +111,8 @@ public class Scraper {
         String[] characters = new String[4];
         String[][] pairings = new String[2][2];
 
-        String[] characterArray = data.split(", ");
+        //pairings are not separated with commas, so we'll have to handle that, and it'll be ugly. Yay
+        String[] characterArray = data.split("[\\,\\]]");
         String character;
 
         //If there are pairings, they will always come first
@@ -123,7 +124,8 @@ public class Scraper {
             characters[0] = character;
             pairings[0][0] = character;
 
-            character = characterArray[1].substring(0, characterArray[1].length() - 1);
+
+            character = characterArray[1];
             characters[1] = character;
             pairings[0][1] = character;
         } else {
@@ -134,6 +136,8 @@ public class Scraper {
             characters[1] = characterArray[1];
         }
 
+        //I think there's still a bug in this block
+        //TODO: find and destroy
         if (characterArray.length > 2 && characterArray[2].startsWith("[")) {
             character = characterArray[2].substring(1);
             int pairingsIndex = pairings[0][0] == null ? 0 : 1;
