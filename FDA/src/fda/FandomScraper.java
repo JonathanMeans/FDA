@@ -150,7 +150,13 @@ public class FandomScraper extends Scraper {
     }
 
     private static void extractSummary(Element story, Fanfic fic) {
-        fic.setSummary(story.select("div.z-indent.z-padtop").text());
+        String summary = story.select("div.z-indent.z-padtop").text();
+        int cutoffIndex = summary.indexOf("Rated: "); //there's probably some summary out there somewhere
+            //that will break this, but we can work with this for now.
+            //And let's be honest, if they have redundant info like this in the summary, it's -probably-
+            //not making the "Top n" list in the first place
+        summary = summary.substring(0, cutoffIndex);
+        fic.setSummary(summary);
     }
 
     private static void extractDates(Element story, Fanfic fic) {
