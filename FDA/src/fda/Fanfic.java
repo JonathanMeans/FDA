@@ -80,6 +80,20 @@ public class Fanfic implements Comparable<Fanfic> {
         return pairings;
     }
 
+    public String getPairingsString() {
+        String pairingsString = "";
+        if (pairings[0] != null) {
+            pairingsString += "[" + pairings[0][0] + ", " + pairings[0][1] + "]";
+        }
+
+        if (pairings[1] != null) {
+            pairingsString += " [" + pairings[1][0] + ", " + pairings[0][1] + "]";
+        }
+
+        return pairingsString;
+
+    }
+
     private int reviews;
     private int follows;
     private Date publishedDate;

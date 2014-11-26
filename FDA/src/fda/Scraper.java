@@ -138,13 +138,13 @@ public class Scraper {
 
         //I think there's still a bug in this block
         //TODO: find and destroy
-        if (characterArray.length > 2 && characterArray[2].startsWith("[")) {
-            character = characterArray[2].substring(1);
+        if (characterArray.length > 2 && characterArray[2].startsWith(" [")) {
+            character = characterArray[2].substring(2);
             int pairingsIndex = pairings[0][0] == null ? 0 : 1;
             characters[2] = character;
             pairings[pairingsIndex][0] = character;
 
-            character = characterArray[3].substring(0, characterArray[3].length() - 1);
+            character = characterArray[3].substring(1, characterArray[3].length());
             characters[3] = character;
             pairings[pairingsIndex][1] = character;
         } else if (characterArray.length > 2) {
