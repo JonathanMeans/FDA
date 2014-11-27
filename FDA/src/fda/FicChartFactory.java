@@ -14,12 +14,13 @@ import java.util.*;
  */
 public class FicChartFactory {
     private Fanfic[] fics;
+
     public enum Preference {WRITER, READER}
+
     public enum ChartedAttribute {CHARACTER, PAIRING, GENRE, WORDS, RATING}
 
     //Creating charts takes time, so we're going to have a separate field for each.
     //Then, if the chart already exists, we can just return it.
-    private ChartPanel displayChart;
     private JFreeChart readerPreferredCharacterChart;
     private JFreeChart readerPreferredPairingChart;
     private JFreeChart readerPreferredGenreChart;
@@ -32,14 +33,17 @@ public class FicChartFactory {
     private JFreeChart writerPreferredWordsChart;
     private JFreeChart writerPreferredRatingChart;
 
- public FicChartFactory(Fanfic[] fics) {
+    public FicChartFactory(Fanfic[] fics) {
         this.fics = fics;
     }
 
     public ChartPanel defaultPanel() {
-        return createPanel(Preference.WRITER, ChartedAttribute.GENRE);
+        return createPanel(Preference.WRITER, ChartedAttribute.RATING);
     }
 
+    //I am ashamed of the redundancy of this code. I'm certain there's a way to refactor it,
+    //but I have no ideas at the moment.
+    //Anyway, this method uses criminal amounts of boilerplate to create the chart specified by the arguments
     public ChartPanel createPanel(Preference preference, ChartedAttribute attribute) {
         if (preference == Preference.READER) {
             if (attribute == ChartedAttribute.CHARACTER) {
@@ -49,7 +53,7 @@ public class FicChartFactory {
 
                 CategoryDataset dataset = createCharacterDataSet(preference);
                 readerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
-                         "Percentage of Popularity", dataset);
+                        "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredCharacterChart);
 
             } else if (attribute == ChartedAttribute.PAIRING) {
@@ -71,7 +75,17 @@ public class FicChartFactory {
                 readerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredGenreChart);
+            } else if (attribute == ChartedAttribute.RATING) {
+                if (readerPreferredRatingChart != null) {
+                    return new ChartPanel(readerPreferredRatingChart);
+                }
+
+                CategoryDataset dataset = createRatingDataSet(preference);
+                readerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(readerPreferredRatingChart);
             }
+
 
         } else if (preference == Preference.WRITER) {
             if (attribute == ChartedAttribute.CHARACTER) {
@@ -103,6 +117,16 @@ public class FicChartFactory {
                 writerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(writerPreferredGenreChart);
+
+            } else if (attribute == ChartedAttribute.RATING) {
+                if (writerPreferredRatingChart != null) {
+                    return new ChartPanel(writerPreferredRatingChart);
+                }
+
+                CategoryDataset dataset = createRatingDataSet(preference);
+                writerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(writerPreferredRatingChart);
             }
         }
         return null;
@@ -157,8 +181,6 @@ public class FicChartFactory {
         return makeDataSetFromMap(characterMap, totalPopularity);
 
     }
-
-
 
     private CategoryDataset createPairingDataSet(Preference preference) {
         Map<String, Double> pairingMap = new HashMap<String, Double>();
@@ -288,6 +310,60 @@ public class FicChartFactory {
         return makeDataSetFromMap(genreMap, totalPopularity);
     }
 
+    private CategoryDataset createRatingDataSet(Preference preference) {
+        Map<String, Double> ratingMap = new HashMap<String, Double>();
+        double totalPopularity = 0;
+
+        if (preference == Preference.READER) {
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    break;
+                }
+
+                double popularityIncrement = fic.getPopularity();
+                totalPopularity += popularityIncrement;
+
+                String rating = fic.getRating();
+                if (rating == null) {
+                    continue;
+                }
+
+                if (ratingMap.get(rating) == null) {
+                    ratingMap.put(rating, popularityIncrement);
+                } else {
+                    double currentPopularity = ratingMap.get(rating);
+                    ratingMap.put(rating, currentPopularity + popularityIncrement);
+                }
+            }
+        }
+
+        //Finish iterating through the fics
+        if (preference == Preference.WRITER) {
+            double ratingCount = 0;
+            for (Fanfic fic : fics) {
+
+                ratingCount += 1;
+                //this is duplicate code, but I'm not sure it's worth breaking into its own method....
+                if (fic == null) {
+                    continue;
+                }
+
+                String rating = fic.getRating();
+                if (ratingMap.get(rating) == null) {
+                    ratingMap.put(rating, 1.0);
+                } else {
+                    double currentCount = ratingMap.get(rating);
+                    ratingMap.put(rating, currentCount + 1.0);
+                }
+            }
+
+            totalPopularity = ratingCount;
+        }
+
+        return makeDataSetFromMap(ratingMap, totalPopularity);
+
+    }
+
     private CategoryDataset makeDataSetFromMap(Map<String, Double> map, double totalPopularity) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<String> values = new ArrayList<String>(map.keySet());
@@ -317,7 +393,9 @@ public class FicChartFactory {
 
     private String normalizePairing(String[] pairings) {
         String pairingsString;
-        if (pairings == null || pairings[0] == null) { return null; }
+        if (pairings == null || pairings[0] == null) {
+            return null;
+        }
         if (pairings[0].compareTo(pairings[1]) < 0) {
             pairingsString = "[" + pairings[0] + ", " + pairings[1] + "]";
         } else {
@@ -337,7 +415,7 @@ public class FicChartFactory {
         //So technically this is backwards, but it sorts in the order I want, so we're good.
         @Override
         public int compare(String o1, String o2) {
-           return (int) (map.get(o2) - map.get(o1));
+            return (int) (map.get(o2) - map.get(o1));
         }
 
     }

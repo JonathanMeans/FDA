@@ -13,7 +13,7 @@ import javax.swing.event.ListSelectionListener;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class fanficJFrame extends javax.swing.JFrame {
+public class fanficJFrame extends JFrame {
 
     /**
      * Creates new form fanficJFrame
@@ -80,7 +80,7 @@ public class fanficJFrame extends javax.swing.JFrame {
 
         fanficList = new javax.swing.JList();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         graphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
