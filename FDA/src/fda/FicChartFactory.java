@@ -74,30 +74,15 @@ public class FicChartFactory {
         double totalPopularity = 0;
 
         //Not a for-each loop, because I want to track where it breaks off
-        int i;
-        for (i = 0; i < fics.length; ++i) {
-            if (fics[i] == null) { break; }
-            double popularityIncrement = fics[i].getPopularity();
-            totalPopularity += popularityIncrement;
-
-            for (String character : fics[i].getCharacters()) {
-                if (characterMap.get(character) == null) {
-                    characterMap.put(character, popularityIncrement);
-                } else {
-                    double currentPopularity = characterMap.get(character);
-                    characterMap.put(character, currentPopularity + popularityIncrement);
+        if (preference == Preference.READER) {
+            for (int i = 0; i < fics.length; ++i) {
+                if (fics[i] == null) {
+                    break;
                 }
-            }
-        }
-
-        //Finish iterating through the fics
-        if (preference == Preference.WRITER) {
-            for (int j = i+1; j < fics.length; ++j) {
-                //this is duplicate code, but I'm not sure it's worth breaking into its own method....
-                double popularityIncrement = fics[j].getPopularity();
+                double popularityIncrement = fics[i].getPopularity();
                 totalPopularity += popularityIncrement;
 
-                for (String character : fics[j].getCharacters()) {
+                for (String character : fics[i].getCharacters()) {
                     if (characterMap.get(character) == null) {
                         characterMap.put(character, popularityIncrement);
                     } else {
@@ -106,6 +91,27 @@ public class FicChartFactory {
                     }
                 }
             }
+        }
+
+        //Finish iterating through the fics
+        if (preference == Preference.WRITER) {
+            double characterCount = 0;
+            for (int i = 0; i < fics.length; ++i) {
+
+                characterCount += 1;
+                //this is duplicate code, but I'm not sure it's worth breaking into its own method....
+                if (fics[i] == null) { continue; }
+
+                for (String character : fics[i].getCharacters()) {
+                    if (characterMap.get(character) == null) {
+                        characterMap.put(character, 1.0);
+                    } else {
+                        double currentCount = characterMap.get(character);
+                        characterMap.put(character, currentCount + 1.0);
+                    }
+                }
+            }
+            totalPopularity = characterCount;
         }
 
         List<String> characters = new ArrayList<String>(characterMap.keySet());
@@ -119,7 +125,7 @@ public class FicChartFactory {
             if (character != null) {
                 if (k <= 10) {
                     double characterPopularity = characterMap.get(character);
-                    dataset.addValue(characterPopularity * 100/ totalPopularity, character, "");
+                    dataset.addValue(characterPopularity * 100 / totalPopularity, character, "");
                 } else {
                     otherPopularity += characterMap.get(character) / totalPopularity;
                 }
