@@ -5,6 +5,8 @@
 package fda;
 
 
+import org.jfree.chart.ChartPanel;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -29,9 +31,16 @@ public class fanficJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents(String url, int numDays) throws IOException {
 
+        Fanfic[] fics = FandomScraper.extractFics(url, numDays);
+        int separatorIndex = Arrays.asList(fics).indexOf(null);
+        final Fanfic[] topFics = new Fanfic[separatorIndex];
+
+        FicChartFactory chartFactory = new FicChartFactory(fics);
+
+        System.arraycopy(fics, 0, topFics, 0, separatorIndex);
         graphPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        graphTextArea = new javax.swing.JTextArea();
+        chartPanel = chartFactory.defaultPanel();
         otherPanel = new javax.swing.JPanel();
         languageLabel = new javax.swing.JLabel();
         languageTextField = new javax.swing.JTextField();
@@ -53,7 +62,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel = new javax.swing.JLabel();
         followsLabel = new javax.swing.JLabel();
         charactersLabel = new javax.swing.JLabel();
-         languageRLabel = new javax.swing.JLabel();
+        languageRLabel = new javax.swing.JLabel();
         ratingTextField = new javax.swing.JTextField();
         chaptersTextField = new javax.swing.JTextField();
         wordsTextField = new javax.swing.JTextField();
@@ -71,22 +80,12 @@ public class fanficJFrame extends javax.swing.JFrame {
 
         fanficList = new javax.swing.JList();
 
-        //initialize required arrays of Fanfics
-        Fanfic[] fics = FandomScraper.extractFics(url, numDays);
-        int separatorIndex = Arrays.asList(fics).indexOf(null);
-        final Fanfic[] topFics = new Fanfic[separatorIndex];
-        System.arraycopy(fics, 0, topFics, 0, separatorIndex);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         graphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));
 
-        graphTextArea.setColumns(20);
-        graphTextArea.setLineWrap(true);
-        graphTextArea.setRows(5);
-        graphTextArea.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(graphTextArea);
+        jScrollPane1.setViewportView(chartPanel);
 
         javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
         graphPanel.setLayout(graphPanelLayout);
@@ -396,7 +395,7 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField genreTextField;
     private javax.swing.JLabel genresLabel;
     private javax.swing.JPanel graphPanel;
-    private javax.swing.JTextArea graphTextArea;
+    private ChartPanel chartPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel languageLabel;
     private javax.swing.JTextField languageTextField;
