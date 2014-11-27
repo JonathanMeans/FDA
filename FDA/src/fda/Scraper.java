@@ -125,7 +125,7 @@ public class Scraper {
             pairings[0][0] = character;
 
 
-            character = characterArray[1];
+            character = characterArray[1].substring(1);
             characters[1] = character;
             pairings[0][1] = character;
         } else {
@@ -133,11 +133,9 @@ public class Scraper {
         }
 
         if (characterArray.length > 1 && pairings[0][0] == null) {
-            characters[1] = characterArray[1];
+            characters[1] = characterArray[1].substring(1);
         }
 
-        //I think there's still a bug in this block
-        //TODO: find and destroy
         if (characterArray.length > 2 && characterArray[2].startsWith(" [")) {
             character = characterArray[2].substring(2);
             int pairingsIndex = pairings[0][0] == null ? 0 : 1;
@@ -148,11 +146,11 @@ public class Scraper {
             characters[3] = character;
             pairings[pairingsIndex][1] = character;
         } else if (characterArray.length > 2) {
-            characters[2] = characterArray[2];
+            characters[2] = characterArray[2].substring(1);
         }
 
         if (characterArray.length > 3 && pairings[1][0] == null) {
-            characters[3] = characterArray[3];
+            characters[3] = characterArray[3].substring(1);
         }
 
         //set things to null, if needed
