@@ -6,10 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * class for constructing necessary charts
@@ -85,10 +82,10 @@ public class FicChartFactory {
         if (preference == Preference.WRITER) {
             for (int j = i+1; j < fics.length; ++j) {
                 //this is duplicate code, but I'm not sure it's worth breaking into its own method....
-                double popularityIncrement = fics[i].getPopularity();
+                double popularityIncrement = fics[j].getPopularity();
                 totalPopularity += popularityIncrement;
 
-                for (String character : fics[i].getCharacters()) {
+                for (String character : fics[j].getCharacters()) {
                     if (characterMap.get(character) == null) {
                         characterMap.put(character, popularityIncrement);
                     } else {
@@ -99,16 +96,43 @@ public class FicChartFactory {
             }
         }
 
-        for (String character : characterMap.keySet()) {
+        List<String> characters = new ArrayList<String>(characterMap.keySet());
+        MapComparator comparator = new MapComparator(characterMap);
+        Collections.sort(characters, comparator);
+
+        double otherPopularity = 0;
+
+        for (int k = 0; k < characters.size(); ++k) {
+            String character = characters.get(k);
             if (character != null) {
-                double characterPopularity = characterMap.get(character);
-                characterMap.put(character, characterPopularity / totalPopularity);
-                dataset.addValue(characterPopularity / totalPopularity, character, character);
+                if (k <= 10) {
+                    double characterPopularity = characterMap.get(character);
+                    dataset.addValue(characterPopularity * 100/ totalPopularity, character, "");
+                } else {
+                    otherPopularity += characterMap.get(character) / totalPopularity;
+                }
             }
         }
+
+        dataset.addValue(otherPopularity * 100, "Other", "");
 
         return dataset;
 
     }
 
+    private class MapComparator implements Comparator<String> {
+
+        private Map<String, Double> map;
+
+        public MapComparator(Map<String, Double> map) {
+            this.map = map;
+        }
+
+        //So technically this is backwards, but it sorts in the order I want, so we're good.
+        @Override
+        public int compare(String o1, String o2) {
+           return (int) (map.get(o2) - map.get(o1));
+        }
+
+    }
 }
