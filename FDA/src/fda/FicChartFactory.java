@@ -37,7 +37,7 @@ public class FicChartFactory {
     }
 
     public ChartPanel defaultPanel() {
-        return createPanel(Preference.READER, ChartedAttribute.CHARACTER);
+        return createPanel(Preference.WRITER, ChartedAttribute.PAIRING);
     }
 
     public ChartPanel createPanel(Preference preference, ChartedAttribute attribute) {
@@ -51,6 +51,16 @@ public class FicChartFactory {
                 readerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
                          "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredCharacterChart);
+
+            } else if (attribute == ChartedAttribute.PAIRING) {
+                if (readerPreferredPairingChart != null) {
+                    return new ChartPanel(readerPreferredCharacterChart);
+                }
+
+                CategoryDataset dataset = createPairingDataSet(preference);
+                readerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(readerPreferredPairingChart);
             }
 
         } else if (preference == Preference.WRITER) {
@@ -63,6 +73,15 @@ public class FicChartFactory {
                 writerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(writerPreferredCharacterChart);
+            } else if (attribute == ChartedAttribute.PAIRING) {
+                if (writerPreferredPairingChart != null) {
+                    return new ChartPanel(writerPreferredCharacterChart);
+                }
+
+                CategoryDataset dataset = createPairingDataSet(preference);
+                writerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(writerPreferredPairingChart);
             }
         }
         return null;
@@ -114,28 +133,100 @@ public class FicChartFactory {
             totalPopularity = characterCount;
         }
 
-        List<String> characters = new ArrayList<String>(characterMap.keySet());
-        MapComparator comparator = new MapComparator(characterMap);
-        Collections.sort(characters, comparator);
+        return makeDataSetFromMap(characterMap, totalPopularity);
+
+    }
+
+    private CategoryDataset makeDataSetFromMap(Map<String, Double> map, double totalPopularity) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<String> values = new ArrayList<String>(map.keySet());
+        MapComparator comparator = new MapComparator(map);
+        Collections.sort(values, comparator);
 
         double otherPopularity = 0;
 
-        for (int k = 0; k < characters.size(); ++k) {
-            String character = characters.get(k);
+        for (int k = 0; k < values.size(); ++k) {
+            String character = values.get(k);
             if (character != null) {
                 if (k <= 10) {
-                    double characterPopularity = characterMap.get(character);
+                    double characterPopularity = map.get(character);
                     dataset.addValue(characterPopularity * 100 / totalPopularity, character, "");
                 } else {
-                    otherPopularity += characterMap.get(character) / totalPopularity;
+                    otherPopularity += map.get(character) / totalPopularity;
                 }
             }
         }
 
-        dataset.addValue(otherPopularity * 100, "Other", "");
+        if (otherPopularity != 0) {
+            dataset.addValue(otherPopularity * 100, "Other", "");
+        }
 
         return dataset;
+    }
 
+    private CategoryDataset createPairingDataSet(Preference preference) {
+        Map<String, Double> pairingMap = new HashMap<String, Double>();
+        double totalPopularity = 0;
+
+        if (preference == Preference.READER) {
+            for (int i = 0; i < fics.length; ++i) {
+                if (fics[i] == null) {break;}
+
+                String[][] pairings = fics[i].getPairings();
+
+                if (pairings == null) { continue; }
+                for (String[] pairing : pairings) {
+                    String pairingString = normalizePairing(pairing);
+                    if (pairingString == null) { continue; }
+
+                    if (pairingMap.get(pairingString) == null) {
+                        pairingMap.put(pairingString, fics[i].getPopularity());
+
+                    } else {
+                        double currentPopularity = pairingMap.get(pairingString);
+                        pairingMap.put(pairingString, currentPopularity + fics[i].getPopularity());
+                    }
+
+                    totalPopularity += fics[i].getPopularity();
+                }
+            }
+        } else {
+
+            double totalCount = 0;
+            for (int i = 0; i < fics.length; ++i) {
+                if (fics[i] == null) { continue; }
+                String[][] pairings = fics[i].getPairings();
+
+                if (pairings == null) {continue;}
+                for (String[] pairing : pairings) {
+                    String pairingString = normalizePairing(pairing);
+                    if (pairingString == null) { continue; }
+
+                    if (pairingMap.get(pairingString) == null) {
+                        pairingMap.put(pairingString, 1.0);
+                    } else {
+                        double currentCount = pairingMap.get(pairingString);
+                        pairingMap.put(pairingString, currentCount + 1);
+                    }
+
+                    totalCount += 1;
+                }
+            }
+            totalPopularity = totalCount;
+        }
+
+        return makeDataSetFromMap(pairingMap, totalPopularity);
+    }
+
+    private String normalizePairing(String[] pairings) {
+        String pairingsString = "";
+        if (pairings == null || pairings[0] == null) { return null; }
+        if (pairings[0].compareTo(pairings[1]) < 0) {
+            pairingsString = "[" + pairings[0] + ", " + pairings[1] + "]";
+        } else {
+            pairingsString = "[" + pairings[1] + ", " + pairings[0] + "]";
+        }
+        return pairingsString;
     }
 
     private class MapComparator implements Comparator<String> {
