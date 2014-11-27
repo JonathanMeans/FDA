@@ -14,8 +14,8 @@ import java.util.*;
  */
 public class FicChartFactory {
     private Fanfic[] fics;
-    public enum Preference {WRITER, READER};
-    public enum ChartedAttribute {CHARACTER, PAIRING, GENRE, WORDS, RATING};
+    public enum Preference {WRITER, READER}
+    public enum ChartedAttribute {CHARACTER, PAIRING, GENRE, WORDS, RATING}
 
     //Creating charts takes time, so we're going to have a separate field for each.
     //Then, if the chart already exists, we can just return it.
@@ -51,6 +51,18 @@ public class FicChartFactory {
                 readerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
                          "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredCharacterChart);
+            }
+
+        } else if (preference == Preference.WRITER) {
+            if (attribute == ChartedAttribute.CHARACTER) {
+                if (writerPreferredCharacterChart != null) {
+                    return new ChartPanel(writerPreferredCharacterChart);
+                }
+
+                CategoryDataset dataset = createCharacterDataSet(preference);
+                writerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(writerPreferredCharacterChart);
             }
         }
         return null;
