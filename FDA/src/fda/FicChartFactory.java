@@ -5,6 +5,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
+import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 
 import java.util.*;
 
@@ -38,7 +40,7 @@ public class FicChartFactory {
     }
 
     public ChartPanel defaultPanel() {
-        return createPanel(Preference.WRITER, ChartedAttribute.RATING);
+        return createPanel(Preference.WRITER, ChartedAttribute.WORDS);
     }
 
     //I am ashamed of the redundancy of this code. I'm certain there's a way to refactor it,
@@ -75,6 +77,7 @@ public class FicChartFactory {
                 readerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredGenreChart);
+
             } else if (attribute == ChartedAttribute.RATING) {
                 if (readerPreferredRatingChart != null) {
                     return new ChartPanel(readerPreferredRatingChart);
@@ -84,6 +87,16 @@ public class FicChartFactory {
                 readerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredRatingChart);
+
+            } else if (attribute == ChartedAttribute.WORDS) {
+                if (readerPreferredWordsChart != null) {
+                    return new ChartPanel(readerPreferredWordsChart);
+                }
+
+                BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
+                readerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
+                        "", "Words per chapter", dataset, true);
+                return new ChartPanel(readerPreferredWordsChart);
             }
 
 
@@ -127,6 +140,15 @@ public class FicChartFactory {
                 writerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(writerPreferredRatingChart);
+            } else if (attribute == ChartedAttribute.WORDS) {
+                if (writerPreferredWordsChart != null) {
+                    return new ChartPanel(writerPreferredWordsChart);
+                }
+
+                BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
+                writerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
+                        "", "Words per chapter", dataset, true);
+                return new ChartPanel(writerPreferredWordsChart);
             }
         }
         return null;
@@ -362,6 +384,28 @@ public class FicChartFactory {
 
         return makeDataSetFromMap(ratingMap, totalPopularity);
 
+    }
+
+    private BoxAndWhiskerCategoryDataset createWordsDataSet(Preference preference) {
+        List<Double> averageWords = new ArrayList<Double>();
+
+        if (preference == Preference.READER) {
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    break;
+                }
+                averageWords.add((double) fic.getWords() / fic.getChapters());
+            }
+        } else {
+            for (Fanfic fic : fics) {
+                if (fic == null) { continue; }
+                averageWords.add((double) fic.getWords() / fic.getChapters());
+            }
+        }
+
+        DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+        dataset.add(averageWords, "", "");
+        return dataset;
     }
 
     private CategoryDataset makeDataSetFromMap(Map<String, Double> map, double totalPopularity) {
