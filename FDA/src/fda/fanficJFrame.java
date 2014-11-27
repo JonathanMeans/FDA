@@ -66,6 +66,8 @@ public class fanficJFrame extends javax.swing.JFrame {
         summarytextArea.setLineWrap(true);
         summarytextArea.setWrapStyleWord(true);
         fanScrollPane = new javax.swing.JScrollPane();
+        genreRLabel = new JLabel();
+        genreRTextField = new JTextField();
 
         fanficList = new javax.swing.JList();
 
@@ -189,20 +191,14 @@ public class fanficJFrame extends javax.swing.JFrame {
         SummaryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fic Summary"));
 
         ratingLabel.setText("Rating:");
-
-        chaptersLabel.setText("Chapters");
-
+        chaptersLabel.setText("Chapters:");
         wordsLabel.setText("Words:");
-
-        reviewsLabel.setText("Reviews:");
-
         favoritesLabel.setText("Favorites:");
-
         followsLabel.setText("Follows:");
-
         charactersLabel.setText("Characters:");
-
         languageRLabel.setText("Language:");
+        genreRLabel.setText("Genre:");
+        reviewsLabel.setText("Reviews:");
 
         ratingTextField.setAutoscrolls(false);
         ratingTextField.setEditable(false);
@@ -226,7 +222,10 @@ public class fanficJFrame extends javax.swing.JFrame {
         characterTextField.setEditable(false);
 
         languageRTextField.setAutoscrolls(false);
-        languageTextField.setEditable(false);
+        languageRTextField.setEditable(false);
+
+        genreRTextField.setAutoscrolls(false);
+        genreRTextField.setEditable(false);
 
         javax.swing.GroupLayout SummaryPanelLayout = new javax.swing.GroupLayout(SummaryPanel);
         SummaryPanel.setLayout(SummaryPanelLayout);
@@ -237,13 +236,14 @@ public class fanficJFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(ratingLabel)
+                                        .addComponent(languageRLabel)
+                                        .addComponent(genreRLabel)
                                         .addComponent(chaptersLabel)
                                         .addComponent(wordsLabel)
                                         .addComponent(reviewsLabel)
                                         .addComponent(favoritesLabel)
                                         .addComponent(followsLabel)
-                                        .addComponent(charactersLabel)
-                                        .addComponent( languageRLabel))
+                                        .addComponent(charactersLabel))
                                 .addGap(14, 14, 14)
                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(characterTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
@@ -252,8 +252,9 @@ public class fanficJFrame extends javax.swing.JFrame {
                                         .addComponent(reviewsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(wordsTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(chaptersTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(ratingTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(languageRTextField))
+                                        .addComponent(genreRTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(languageRTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(ratingTextField))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SummaryPanelLayout.setVerticalGroup(
@@ -267,13 +268,21 @@ public class fanficJFrame extends javax.swing.JFrame {
                                                         .addComponent(ratingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(languageRLabel)
+                                                        .addComponent(languageRTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(genreRLabel)
+                                                        .addComponent(genreRTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(chaptersLabel)
                                                         .addComponent(chaptersTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(6, 6, 6)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(wordsLabel)
                                                         .addComponent(wordsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(13, 13, 13)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(reviewsLabel)
                                                         .addComponent(reviewsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -281,18 +290,14 @@ public class fanficJFrame extends javax.swing.JFrame {
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(favoritesLabel)
                                                         .addComponent(favoritesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(6, 6, 6)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(followsLabel)
                                                         .addComponent(followsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(9, 9, 9)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(charactersLabel)
                                                         .addComponent(characterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(SummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent( languageRLabel)
-                                                        .addComponent(languageRTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addComponent(summarytextArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -302,7 +307,7 @@ public class fanficJFrame extends javax.swing.JFrame {
         favoritesLabel.getAccessibleContext().setAccessibleName("Favorites");
         followsLabel.getAccessibleContext().setAccessibleName("Follows");
         charactersLabel.getAccessibleContext().setAccessibleName("Characters");
-         languageRLabel.getAccessibleContext().setAccessibleName("Pairings");
+        languageRLabel.getAccessibleContext().setAccessibleName("Pairings");
 
         fanScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Fanfic Title by Author"));
 
@@ -329,15 +334,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                 followsTextField.setText(Integer.toString(fic.getFollows()));
                 summarytextArea.setText(fic.getSummary());
                 languageRTextField.setText(fic.getLanguage());
-
-                String charString = fic.getCharacters()[0];
-                for (int i = 1; i < fic.getCharacters().length; ++i) {
-                    if (fic.getCharacters()[i] != null) {
-                        charString += ", " + fic.getCharacters()[i];
-                    }
-                }
-
-                characterTextField.setText(charString);
+                characterTextField.setText(fic.getPairingsString());
 
                 String genreString = fic.getGenres()[0];
                 for (int i = 1; i < fic.getGenres().length; ++i) {
@@ -346,7 +343,7 @@ public class fanficJFrame extends javax.swing.JFrame {
                     }
                 }
 
-                genreTextField.setText(genreString);
+                genreRTextField.setText(genreString);
 
             }
         });
@@ -421,5 +418,7 @@ public class fanficJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel wordsLabel;
     private javax.swing.JTextField wordsTextField;
     private javax.swing.JRadioButton writerButton;
-    // End of variables declaration                   
+    private JLabel genreRLabel;
+    private JTextField genreRTextField;
+    // End of variables declaration
 }
