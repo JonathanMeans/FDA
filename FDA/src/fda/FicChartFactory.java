@@ -37,7 +37,7 @@ public class FicChartFactory {
     }
 
     public ChartPanel defaultPanel() {
-        return createPanel(Preference.WRITER, ChartedAttribute.PAIRING);
+        return createPanel(Preference.WRITER, ChartedAttribute.GENRE);
     }
 
     public ChartPanel createPanel(Preference preference, ChartedAttribute attribute) {
@@ -61,6 +61,16 @@ public class FicChartFactory {
                 readerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(readerPreferredPairingChart);
+
+            } else if (attribute == ChartedAttribute.GENRE) {
+                if (readerPreferredGenreChart != null) {
+                    return new ChartPanel(readerPreferredGenreChart);
+                }
+
+                CategoryDataset dataset = createGenreDataSet(preference);
+                readerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(readerPreferredGenreChart);
             }
 
         } else if (preference == Preference.WRITER) {
@@ -73,6 +83,7 @@ public class FicChartFactory {
                 writerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(writerPreferredCharacterChart);
+
             } else if (attribute == ChartedAttribute.PAIRING) {
                 if (writerPreferredPairingChart != null) {
                     return new ChartPanel(writerPreferredCharacterChart);
@@ -82,26 +93,34 @@ public class FicChartFactory {
                 writerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
                         "Percentage of Popularity", dataset);
                 return new ChartPanel(writerPreferredPairingChart);
+
+            } else if (attribute == ChartedAttribute.GENRE) {
+                if (writerPreferredGenreChart != null) {
+                    return new ChartPanel(writerPreferredGenreChart);
+                }
+
+                CategoryDataset dataset = createGenreDataSet(preference);
+                writerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
+                        "Percentage of Popularity", dataset);
+                return new ChartPanel(writerPreferredGenreChart);
             }
         }
         return null;
     }
 
     private CategoryDataset createCharacterDataSet(Preference preference) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         Map<String, Double> characterMap = new HashMap<String, Double>();
         double totalPopularity = 0;
 
-        //Not a for-each loop, because I want to track where it breaks off
         if (preference == Preference.READER) {
-            for (int i = 0; i < fics.length; ++i) {
-                if (fics[i] == null) {
+            for (Fanfic fic : fics) {
+                if (fic == null) {
                     break;
                 }
-                double popularityIncrement = fics[i].getPopularity();
+                double popularityIncrement = fic.getPopularity();
                 totalPopularity += popularityIncrement;
 
-                for (String character : fics[i].getCharacters()) {
+                for (String character : fic.getCharacters()) {
                     if (characterMap.get(character) == null) {
                         characterMap.put(character, popularityIncrement);
                     } else {
@@ -115,13 +134,15 @@ public class FicChartFactory {
         //Finish iterating through the fics
         if (preference == Preference.WRITER) {
             double characterCount = 0;
-            for (int i = 0; i < fics.length; ++i) {
+            for (Fanfic fic : fics) {
 
                 characterCount += 1;
                 //this is duplicate code, but I'm not sure it's worth breaking into its own method....
-                if (fics[i] == null) { continue; }
+                if (fic == null) {
+                    continue;
+                }
 
-                for (String character : fics[i].getCharacters()) {
+                for (String character : fic.getCharacters()) {
                     if (characterMap.get(character) == null) {
                         characterMap.put(character, 1.0);
                     } else {
@@ -137,70 +158,57 @@ public class FicChartFactory {
 
     }
 
-    private CategoryDataset makeDataSetFromMap(Map<String, Double> map, double totalPopularity) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        List<String> values = new ArrayList<String>(map.keySet());
-        MapComparator comparator = new MapComparator(map);
-        Collections.sort(values, comparator);
 
-        double otherPopularity = 0;
-
-        for (int k = 0; k < values.size(); ++k) {
-            String character = values.get(k);
-            if (character != null) {
-                if (k <= 10) {
-                    double characterPopularity = map.get(character);
-                    dataset.addValue(characterPopularity * 100 / totalPopularity, character, "");
-                } else {
-                    otherPopularity += map.get(character) / totalPopularity;
-                }
-            }
-        }
-
-        if (otherPopularity != 0) {
-            dataset.addValue(otherPopularity * 100, "Other", "");
-        }
-
-        return dataset;
-    }
 
     private CategoryDataset createPairingDataSet(Preference preference) {
         Map<String, Double> pairingMap = new HashMap<String, Double>();
         double totalPopularity = 0;
 
         if (preference == Preference.READER) {
-            for (int i = 0; i < fics.length; ++i) {
-                if (fics[i] == null) {break;}
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    break;
+                }
 
-                String[][] pairings = fics[i].getPairings();
+                String[][] pairings = fic.getPairings();
 
-                if (pairings == null) { continue; }
+                if (pairings == null) {
+                    continue;
+                }
                 for (String[] pairing : pairings) {
                     String pairingString = normalizePairing(pairing);
-                    if (pairingString == null) { continue; }
+                    if (pairingString == null) {
+                        continue;
+                    }
 
                     if (pairingMap.get(pairingString) == null) {
-                        pairingMap.put(pairingString, fics[i].getPopularity());
+                        pairingMap.put(pairingString, fic.getPopularity());
 
                     } else {
                         double currentPopularity = pairingMap.get(pairingString);
-                        pairingMap.put(pairingString, currentPopularity + fics[i].getPopularity());
+                        pairingMap.put(pairingString, currentPopularity + fic.getPopularity());
                     }
 
-                    totalPopularity += fics[i].getPopularity();
+                    totalPopularity += fic.getPopularity();
                 }
             }
         } else {
 
             double totalCount = 0;
-            for (int i = 0; i < fics.length; ++i) {
-                if (fics[i] == null) { continue; }
-                String[][] pairings = fics[i].getPairings();
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    continue;
+                }
+                String[][] pairings = fic.getPairings();
 
-                if (pairings == null) {continue;}
+                if (pairings == null) {
+                    continue;
+                }
                 for (String[] pairing : pairings) {
                     String pairingString = normalizePairing(pairing);
-                    if (pairingString == null) { continue; }
+                    if (pairingString == null) {
+                        continue;
+                    }
 
                     if (pairingMap.get(pairingString) == null) {
                         pairingMap.put(pairingString, 1.0);
@@ -218,8 +226,97 @@ public class FicChartFactory {
         return makeDataSetFromMap(pairingMap, totalPopularity);
     }
 
+    private CategoryDataset createGenreDataSet(Preference preference) {
+        double totalPopularity = 0;
+        Map<String, Double> genreMap = new HashMap<String, Double>();
+
+        if (preference == Preference.READER) {
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    break;
+                }
+
+                String[] genres = fic.getGenres();
+
+                if (genres == null) {
+                    continue;
+                }
+                for (String genre : genres) {
+                    if (genre == null) {
+                        continue;
+                    }
+
+                    if (genreMap.get(genre) == null) {
+                        genreMap.put(genre, fic.getPopularity());
+
+                    } else {
+                        double currentPopularity = genreMap.get(genre);
+                        genreMap.put(genre, currentPopularity + fic.getPopularity());
+                    }
+
+                    totalPopularity += fic.getPopularity();
+                }
+            }
+        } else {
+
+            double totalCount = 0;
+            for (Fanfic fic : fics) {
+                if (fic == null) {
+                    continue;
+                }
+                String[] genres = fic.getGenres();
+
+                if (genres == null) {
+                    continue;
+                }
+
+                for (String genre : genres) {
+
+                    if (genreMap.get(genre) == null) {
+                        genreMap.put(genre, 1.0);
+                    } else {
+                        double currentCount = genreMap.get(genre);
+                        genreMap.put(genre, currentCount + 1);
+                    }
+
+                    totalCount += 1;
+                }
+            }
+            totalPopularity = totalCount;
+        }
+
+        return makeDataSetFromMap(genreMap, totalPopularity);
+    }
+
+    private CategoryDataset makeDataSetFromMap(Map<String, Double> map, double totalPopularity) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<String> values = new ArrayList<String>(map.keySet());
+        MapComparator comparator = new MapComparator(map);
+        Collections.sort(values, comparator);
+
+        double otherPopularity = 0;
+
+        for (int k = 0; k < values.size(); ++k) {
+            String value = values.get(k);
+            if (value != null && !value.equals("None")) {
+                if (k <= 10) {
+                    double characterPopularity = map.get(value);
+                    dataset.addValue(characterPopularity * 100 / totalPopularity, value, "");
+                } else {
+                    otherPopularity += map.get(value) / totalPopularity;
+                }
+            }
+        }
+
+        if (otherPopularity != 0) {
+            dataset.addValue(otherPopularity * 100, "Other", "");
+        }
+
+        return dataset;
+    }
+
     private String normalizePairing(String[] pairings) {
-        String pairingsString = "";
+        String pairingsString;
         if (pairings == null || pairings[0] == null) { return null; }
         if (pairings[0].compareTo(pairings[1]) < 0) {
             pairingsString = "[" + pairings[0] + ", " + pairings[1] + "]";
