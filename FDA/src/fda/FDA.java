@@ -601,7 +601,6 @@ public class FDA extends javax.swing.JFrame {
                     }
 
                     String text = ficTitle + "</br>\n"; //Gives the web page the same title as the original.
-                    text = text + ficTitle.text(); //Use the web page title as a document title
 
                     //Get Titles and Filename
                     String pageTitle = Opts.get(i - 1).text();
