@@ -23,6 +23,8 @@ public class FicChartFactory {
 
     //Creating charts takes time, so we're going to have a separate field for each.
     //Then, if the chart already exists, we can just return it.
+    private ChartPanel chartPanel;
+    private JFreeChart displayedChart;
     private JFreeChart readerPreferredCharacterChart;
     private JFreeChart readerPreferredPairingChart;
     private JFreeChart readerPreferredGenreChart;
@@ -39,119 +41,111 @@ public class FicChartFactory {
         this.fics = fics;
     }
 
-    public ChartPanel defaultPanel() {
-        return createPanel(Preference.READER, ChartedAttribute.WORDS);
-    }
-
     //I am ashamed of the redundancy of this code. I'm certain there's a way to refactor it,
     //but I have no ideas at the moment.
     //Anyway, this method uses criminal amounts of boilerplate to create the chart specified by the arguments
     public ChartPanel createPanel(Preference preference, ChartedAttribute attribute) {
         if (preference == Preference.READER) {
             if (attribute == ChartedAttribute.CHARACTER) {
-                if (readerPreferredCharacterChart != null) {
-                    return new ChartPanel(readerPreferredCharacterChart);
+                if (readerPreferredCharacterChart == null) {
+                    CategoryDataset dataset = createCharacterDataSet(preference);
+                    readerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
+                            "Percentage of Popularity", dataset);
                 }
-
-                CategoryDataset dataset = createCharacterDataSet(preference);
-                readerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(readerPreferredCharacterChart);
+                displayedChart = readerPreferredCharacterChart;
 
             } else if (attribute == ChartedAttribute.PAIRING) {
-                if (readerPreferredPairingChart != null) {
-                    return new ChartPanel(readerPreferredCharacterChart);
-                }
+                if (readerPreferredPairingChart == null) {
 
-                CategoryDataset dataset = createPairingDataSet(preference);
-                readerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(readerPreferredPairingChart);
+                    CategoryDataset dataset = createPairingDataSet(preference);
+                    readerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = readerPreferredPairingChart;
 
             } else if (attribute == ChartedAttribute.GENRE) {
-                if (readerPreferredGenreChart != null) {
-                    return new ChartPanel(readerPreferredGenreChart);
-                }
+                if (readerPreferredGenreChart == null) {
 
-                CategoryDataset dataset = createGenreDataSet(preference);
-                readerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(readerPreferredGenreChart);
+                    CategoryDataset dataset = createGenreDataSet(preference);
+                    readerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = readerPreferredGenreChart;
 
             } else if (attribute == ChartedAttribute.RATING) {
-                if (readerPreferredRatingChart != null) {
-                    return new ChartPanel(readerPreferredRatingChart);
-                }
+                if (readerPreferredRatingChart == null) {
 
-                CategoryDataset dataset = createRatingDataSet(preference);
-                readerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(readerPreferredRatingChart);
+                    CategoryDataset dataset = createRatingDataSet(preference);
+                    readerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = readerPreferredRatingChart;
 
             } else if (attribute == ChartedAttribute.WORDS) {
-                if (readerPreferredWordsChart != null) {
-                    return new ChartPanel(readerPreferredWordsChart);
-                }
+                if (readerPreferredWordsChart == null) {
 
-                BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
-                readerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
-                        "", "Words per chapter", dataset, true);
-                return new ChartPanel(readerPreferredWordsChart);
+                    BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
+                    readerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
+                            "", "Words per chapter", dataset, true);
+                }
+                displayedChart = readerPreferredWordsChart;
             }
 
 
         } else if (preference == Preference.WRITER) {
             if (attribute == ChartedAttribute.CHARACTER) {
-                if (writerPreferredCharacterChart != null) {
-                    return new ChartPanel(writerPreferredCharacterChart);
-                }
+                if (writerPreferredCharacterChart == null) {
 
-                CategoryDataset dataset = createCharacterDataSet(preference);
-                writerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(writerPreferredCharacterChart);
+                    CategoryDataset dataset = createCharacterDataSet(preference);
+                    writerPreferredCharacterChart = ChartFactory.createBarChart("Character popularity", "Character",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = writerPreferredCharacterChart;
 
             } else if (attribute == ChartedAttribute.PAIRING) {
-                if (writerPreferredPairingChart != null) {
-                    return new ChartPanel(writerPreferredCharacterChart);
-                }
+                if (writerPreferredPairingChart == null) {
 
-                CategoryDataset dataset = createPairingDataSet(preference);
-                writerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(writerPreferredPairingChart);
+                    CategoryDataset dataset = createPairingDataSet(preference);
+                    writerPreferredPairingChart = ChartFactory.createBarChart("Pairing popularity", "Pairing",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = writerPreferredPairingChart;
 
             } else if (attribute == ChartedAttribute.GENRE) {
-                if (writerPreferredGenreChart != null) {
-                    return new ChartPanel(writerPreferredGenreChart);
-                }
+                if (writerPreferredGenreChart == null) {
 
-                CategoryDataset dataset = createGenreDataSet(preference);
-                writerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(writerPreferredGenreChart);
+                    CategoryDataset dataset = createGenreDataSet(preference);
+                    writerPreferredGenreChart = ChartFactory.createBarChart("Genre popularity", "Genre",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = writerPreferredGenreChart;
 
             } else if (attribute == ChartedAttribute.RATING) {
-                if (writerPreferredRatingChart != null) {
-                    return new ChartPanel(writerPreferredRatingChart);
-                }
+                if (writerPreferredRatingChart == null) {
 
-                CategoryDataset dataset = createRatingDataSet(preference);
-                writerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
-                        "Percentage of Popularity", dataset);
-                return new ChartPanel(writerPreferredRatingChart);
+                    CategoryDataset dataset = createRatingDataSet(preference);
+                    writerPreferredRatingChart = ChartFactory.createBarChart("Rating popularity", "Rating",
+                            "Percentage of Popularity", dataset);
+                }
+                displayedChart = writerPreferredRatingChart;
+
             } else if (attribute == ChartedAttribute.WORDS) {
-                if (writerPreferredWordsChart != null) {
-                    return new ChartPanel(writerPreferredWordsChart);
-                }
+                if (writerPreferredWordsChart == null) {
 
-                BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
-                writerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
-                        "", "Words per chapter", dataset, true);
-                return new ChartPanel(writerPreferredWordsChart);
+                    BoxAndWhiskerCategoryDataset dataset = createWordsDataSet(preference);
+                    writerPreferredWordsChart = ChartFactory.createBoxAndWhiskerChart("Average Words per Chapter",
+                            "", "Words per chapter", dataset, true);
+                }
+                displayedChart = writerPreferredWordsChart;
             }
         }
-        return null;
+
+        if (chartPanel == null) {
+            chartPanel = new ChartPanel(displayedChart);
+        } else {
+            chartPanel.setChart(displayedChart);
+        }
+        return chartPanel;
     }
 
     private CategoryDataset createCharacterDataSet(Preference preference) {
