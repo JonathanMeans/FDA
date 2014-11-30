@@ -80,7 +80,7 @@ public class fanficJFrame extends JFrame {
 
         fanficList = new javax.swing.JList();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         graphPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Graph"));

@@ -40,7 +40,7 @@ public class FicChartFactory {
     }
 
     public ChartPanel defaultPanel() {
-        return createPanel(Preference.WRITER, ChartedAttribute.WORDS);
+        return createPanel(Preference.READER, ChartedAttribute.WORDS);
     }
 
     //I am ashamed of the redundancy of this code. I'm certain there's a way to refactor it,
