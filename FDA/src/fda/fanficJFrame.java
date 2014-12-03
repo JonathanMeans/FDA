@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import fda.FicChartFactory;
 
 public class fanficJFrame extends JFrame {
 
@@ -37,7 +36,7 @@ public class fanficJFrame extends JFrame {
         Fanfic[] fics = FandomScraper.extractFics(url, numDays);
         final FicChartFactory chartFactory = new FicChartFactory(fics);
 
-        graphPanel = new javax.swing.JPanel();
+        graphPanel = new JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         chartPanel = chartFactory.createPanel(preference, chartedAttribute);
         writerButton = new javax.swing.JRadioButton();
@@ -195,7 +194,7 @@ public class fanficJFrame extends JFrame {
 
     // Variables declaration - do not modify
     private javax.swing.JRadioButton genresButton;
-    private javax.swing.JPanel graphPanel;
+    private JPanel graphPanel;
     private ChartPanel chartPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton ratingButton;

@@ -29,6 +29,7 @@ public class FandomScraper extends Scraper {
     //Master method
     //Return a semi-ordered array of fics, given a url and day-boundary
     public static Fanfic[] extractFics(String url, int days) throws IOException {
+        ProgressDialog dialog = new ProgressDialog();
         Document doc = Jsoup.connect(url).get();
         int numPages = countPages(doc);
         int currentPage = 1;
@@ -54,6 +55,7 @@ public class FandomScraper extends Scraper {
         boolean datePassed = false;
 
         do {
+            dialog.setValue(5 + dialog.getValue());
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
@@ -97,6 +99,7 @@ public class FandomScraper extends Scraper {
             ++i;
         }
 
+        dialog.dispose();
         return topFicArray;
     }
 
