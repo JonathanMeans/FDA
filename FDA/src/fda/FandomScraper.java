@@ -53,9 +53,11 @@ public class FandomScraper extends Scraper {
         Date boundaryDate = new Date(timestamp);
 
         boolean datePassed = false;
+        dialog.setValue(50);
 
         do {
-            dialog.setValue(5 + dialog.getValue());
+            int value = dialog.getValue();
+            dialog.setValue(5 + value);
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
