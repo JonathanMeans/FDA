@@ -27,8 +27,4 @@ public class ProgressDialog extends JDialog {
     public void setValue(int value) {
         progressBar.setValue(value);
     }
-
-    public int getValue() {
-        return progressBar.getValue();
-    }
 }
