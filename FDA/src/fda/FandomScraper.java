@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -29,13 +27,12 @@ public class FandomScraper extends Scraper {
     //Master method
     //Return a semi-ordered array of fics, given a url and day-boundary
     public static Fanfic[] extractFics(String url, int days) throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         //Create Date to stand for creation of site
         //Using the deprecated Date(int, int, int) constructor gives me a year in 3989 or something
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(0);
-        calendar.set(1998, 9, 15);
+        calendar.set(1998, Calendar.OCTOBER, 15);
         Date siteOriginDate = calendar.getTime();
 
         long siteOriginTimeStamp = siteOriginDate.getTime();
