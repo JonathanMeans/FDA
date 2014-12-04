@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class FandomScraper extends Scraper {
 
+    private static final Date siteOriginDate = new Date(1998, 9, 15);
+    private static final long siteOriginTimeStamp = siteOriginDate.getTime();
     //This should never be constructed
     private FandomScraper() {
 
@@ -40,27 +42,28 @@ public class FandomScraper extends Scraper {
         List<Fanfic> ficList = new ArrayList<Fanfic>();
         BoundedSortedFics topFicList = new BoundedSortedFics(numTopFics);
 
-        long timestamp = new Date().getTime();
+        long startTimeStamp = new Date().getTime();
 
         //force the calculation to use long to prevent overflow
         long deltaMillis = days * 24 * 60 * 60;
         deltaMillis *= 1000;
-        timestamp = timestamp - deltaMillis;
+        long endTimeStamp = startTimeStamp - deltaMillis;
         if (days == Integer.MAX_VALUE) {
-            timestamp = 0; //technically, no, but it'll work all the same
+            endTimeStamp = siteOriginTimeStamp; //technically, no, but it'll work all the same
         }
 
-        Date boundaryDate = new Date(timestamp);
+        Date boundaryDate = new Date(endTimeStamp);
 
         boolean datePassed = false;
-        dialog.setValue(50);
 
         do {
-            int value = dialog.getValue();
-            dialog.setValue(5 + value);
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
+
+                int progressValue = (int) (100 * (startTimeStamp - fic.getUpdatedDate().getTime())
+                        / (startTimeStamp - endTimeStamp));
+                dialog.setValue(progressValue);
 
                 if (fic.getUpdatedDate().before(boundaryDate)) {
                     datePassed = true;

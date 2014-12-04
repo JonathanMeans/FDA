@@ -379,7 +379,7 @@ public class FDA extends javax.swing.JFrame {
         // TODO Search button:
 
         // validateURL validURl = new validateURL();
-        String url = searchTextField.getText();
+        final String url = searchTextField.getText();
         if (UrlType.FANDOM== checkUrl(url))
         {
             //do search
@@ -388,16 +388,25 @@ public class FDA extends javax.swing.JFrame {
             //ideally this would be refactored so that we only have to change the code in one place
             //if we want to alter the possible date ranges, but good enough for now
             int[] daySelection = {Integer.MAX_VALUE, 7, 30, 365 / 2};
-            int numDays = daySelection[timerangeComboBox.getSelectedIndex()];
-            try {
-                //System.out.println("Started");
-                fanficJFrame frame = new fanficJFrame(url, numDays);
-                frame.setVisible(true);
-            } catch (IOException e) {
-                String message = "This does not appear to lead to a valid fandom. Please try again.";
-                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
-                //TODO: display error message
-            }
+            final int numDays = daySelection[timerangeComboBox.getSelectedIndex()];
+
+                //This is necessary to keep the Progress Bar off the EDT
+                //Otherwise it won't update
+                SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        try {
+                            fanficJFrame frame = new fanficJFrame(url, numDays);
+                            frame.setVisible(true);
+                        } catch (IOException e) {
+                            String message = "This does not appear to lead to a valid fandom. Please try again.";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                        }
+                        return null;
+                    }
+                };
+            worker.execute();
+
             System.out.println("and here do search");
         }
         else

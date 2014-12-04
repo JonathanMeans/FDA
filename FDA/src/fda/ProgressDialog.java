@@ -18,7 +18,6 @@ public class ProgressDialog extends JDialog {
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
         progressBar.setStringPainted(true);
-        progressBar.setIndeterminate(true);
         add(progressBar);
         pack();
         setLocationRelativeTo(null);
@@ -26,7 +25,7 @@ public class ProgressDialog extends JDialog {
     }
 
     public void setValue(int value) {
-        //progressBar.setValue(value);
+        progressBar.setValue(value);
     }
 
     public int getValue() {
