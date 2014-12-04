@@ -9,10 +9,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Subclass of Scraper
@@ -21,8 +20,7 @@ import java.util.List;
  */
 public class FandomScraper extends Scraper {
 
-    private static final Date siteOriginDate = new Date(1998, 9, 15);
-    private static final long siteOriginTimeStamp = siteOriginDate.getTime();
+
     //This should never be constructed
     private FandomScraper() {
 
@@ -31,6 +29,17 @@ public class FandomScraper extends Scraper {
     //Master method
     //Return a semi-ordered array of fics, given a url and day-boundary
     public static Fanfic[] extractFics(String url, int days) throws IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        //Create Date to stand for creation of site
+        //Using the deprecated Date(int, int, int) constructor gives me a year in 3989 or something
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(0);
+        calendar.set(1998, 9, 15);
+        Date siteOriginDate = calendar.getTime();
+
+        long siteOriginTimeStamp = siteOriginDate.getTime();
+
         ProgressDialog dialog = new ProgressDialog();
         Document doc = Jsoup.connect(url).get();
         int numPages = countPages(doc);
@@ -44,12 +53,15 @@ public class FandomScraper extends Scraper {
 
         long startTimeStamp = new Date().getTime();
 
-        //force the calculation to use long to prevent overflow
-        long deltaMillis = days * 24 * 60 * 60;
-        deltaMillis *= 1000;
-        long endTimeStamp = startTimeStamp - deltaMillis;
+
+        long endTimeStamp;
         if (days == Integer.MAX_VALUE) {
             endTimeStamp = siteOriginTimeStamp; //technically, no, but it'll work all the same
+        } else {
+            //force the calculation to use long to prevent overflow
+            long deltaMillis = days * 24 * 60 * 60;
+            deltaMillis *= 1000;
+            endTimeStamp = startTimeStamp - deltaMillis;
         }
 
         Date boundaryDate = new Date(endTimeStamp);
