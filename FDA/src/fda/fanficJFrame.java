@@ -36,16 +36,16 @@ public class fanficJFrame extends JFrame {
         Fanfic[] fics = FandomScraper.extractFics(url, numDays);
         final FicChartFactory chartFactory = new FicChartFactory(fics);
 
-        graphPanel = new JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JPanel graphPanel = new JPanel();
+        JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         chartPanel = chartFactory.createPanel(preference, chartedAttribute);
-        writerButton = new javax.swing.JRadioButton();
-        readerRadioButton = new javax.swing.JRadioButton();
-        ratingButton = new javax.swing.JRadioButton();
-        genresButton = new javax.swing.JRadioButton();
-        wordCntButton = new javax.swing.JRadioButton();
-        pairingsButton = new javax.swing.JRadioButton();
-        characterButton = new javax.swing.JRadioButton();
+        JRadioButton writerButton = new javax.swing.JRadioButton();
+        JRadioButton readerRadioButton = new javax.swing.JRadioButton();
+        JRadioButton ratingButton = new javax.swing.JRadioButton();
+        JRadioButton genresButton = new javax.swing.JRadioButton();
+        JRadioButton wordCntButton = new javax.swing.JRadioButton();
+        JRadioButton pairingsButton = new javax.swing.JRadioButton();
+        JRadioButton characterButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -193,17 +193,7 @@ public class fanficJFrame extends JFrame {
     }// </editor-fold>
 
     // Variables declaration - do not modify
-    private javax.swing.JRadioButton genresButton;
-    private JPanel graphPanel;
     private ChartPanel chartPanel;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton ratingButton;
-    private javax.swing.JRadioButton characterButton;
-    private javax.swing.JRadioButton pairingsButton;
-    private javax.swing.JRadioButton readerRadioButton;
-    private javax.swing.JRadioButton wordCntButton;
-    private javax.swing.JRadioButton writerButton;
-
     private FicChartFactory.Preference preference;
     private FicChartFactory.ChartedAttribute chartedAttribute;
     // End of variables declaration
