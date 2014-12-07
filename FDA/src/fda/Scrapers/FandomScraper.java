@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -41,7 +42,15 @@ public class FandomScraper extends Scraper {
         long siteOriginTimeStamp = siteOriginDate.getTime();
 
         ProgressDialog dialog = new ProgressDialog();
-        Document doc = Jsoup.connect(url).get();
+        Document doc;
+
+        //make sure connection exists
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch ( UnknownHostException e) {
+            dialog.dispose();
+            throw new IOException("Unable to connect to Internet. Please try again.");
+        }
         int numPages = countPages(doc);
         int currentPage = 1;
 
@@ -52,9 +61,8 @@ public class FandomScraper extends Scraper {
         BoundedSortedFics topFicList = new BoundedSortedFics(numTopFics);
 
         long startTimeStamp = new Date().getTime();
-
-
         long endTimeStamp;
+
         if (days == Integer.MAX_VALUE) {
             endTimeStamp = siteOriginTimeStamp; //technically, no, but it'll work all the same
         } else {
