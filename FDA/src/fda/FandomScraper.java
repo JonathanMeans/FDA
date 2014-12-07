@@ -69,6 +69,11 @@ public class FandomScraper extends Scraper {
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
+                System.out.println(fic);
+
+                if (fic.getAuthor().equals("HPFan")) {
+                    continue;
+                }
 
                 int progressValue = (int) (100 * (startTimeStamp - fic.getUpdatedDate().getTime())
                         / (startTimeStamp - endTimeStamp));
@@ -86,6 +91,7 @@ public class FandomScraper extends Scraper {
             }
 
             url = incrementPage(url, currentPage);
+            System.out.println(url);
 
             //sometimes there's a timeout error, so loop here
             doc = null;
@@ -136,6 +142,31 @@ public class FandomScraper extends Scraper {
         extractTitleData(story, fic);
         extractAuthorData(story, fic);
         extractSummary(story, fic);
+
+        //This specific story has an ill-formed properties list
+        //Rather than try to mess with the scraper to try to figure out how to read
+        //an arbitrarily-ordered list, which is probably quite complicated,
+        //I'm hard-coding this in.
+        //The fic sucks, the author sucks, and nothing about it is ever likely to change.
+        if (fic.getFicUrl().equals("https://www.fanfiction.net/s/268931/1/What-s-in-a-name-I-m-not-sure")) {
+            fic.setRating("K");
+            fic.setLanguage("English");
+            String[] genreArray = {"Humor"};
+            fic.setGenres(genreArray);
+            fic.setChapters(3);
+            fic.setWords(3508);
+            fic.setReviews(27);
+            fic.setFavorites(4);
+            fic.setFollows(1);
+            String[] characterArray = {"Hermione G.", "George W."};
+            fic.setCharacters(characterArray);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2001, Calendar.APRIL, 29);
+            fic.setPublishedDate(calendar.getTime());
+            calendar.set(2001, Calendar.MAY, 15);
+            fic.setUpdatedDate(calendar.getTime());
+            return fic;
+        }
         extractMisc(story, fic);
         extractDates(story, fic);
         return fic;
