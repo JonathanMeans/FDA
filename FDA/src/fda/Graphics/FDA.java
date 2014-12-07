@@ -75,13 +75,6 @@ public class FDA extends javax.swing.JFrame {
 
         searchlinkLabel.setText("Fic URL:");
 
-        searchTextField.setText("https://www.fanfiction.net/book/Harry-Potter/");
-        searchTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTextFieldActionPerformed(evt);
-            }
-        });
-
         searchButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         searchButton.setText("Search");
         searchButton.setToolTipText("Search top 10 fics");
@@ -173,11 +166,6 @@ public class FDA extends javax.swing.JFrame {
         downloadTextField.setPreferredSize(new java.awt.Dimension(232, 20));
         downloadTextField.setSelectionEnd(45);
         downloadTextField.setSelectionStart(45);
-        downloadTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                downloadTextFieldActionPerformed(evt);
-            }
-        });
 
         DownloadButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         DownloadButton.setText("Download");
@@ -286,11 +274,6 @@ public class FDA extends javax.swing.JFrame {
         sortBetaTextField.setText("https://www.fanfiction.net/betareaders/anime/Anima/");
         sortBetaTextField.setSelectionEnd(45);
         sortBetaTextField.setSelectionStart(45);
-        sortBetaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sortBetaTextFieldActionPerformed(evt);
-            }
-        });
 
         sortBetasearchButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         sortBetasearchButton.setText("Sort");
@@ -375,9 +358,6 @@ public class FDA extends javax.swing.JFrame {
     public enum UrlType{FANDOM, FIC, BETA, UNKNOWN}
     public static final String BASE_URL = "https://www.fanfiction.net";
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO Search button:
-
-        // validateURL validURl = new validateURL();
         final String url = searchTextField.getText();
         if (UrlType.FANDOM== checkUrl(url))
         {
@@ -398,8 +378,7 @@ public class FDA extends javax.swing.JFrame {
                             fanficJFrame frame = new fanficJFrame(url, numDays);
                             frame.setVisible(true);
                         } catch (IOException e) {
-                            String message = "This does not appear to lead to a valid fandom. Please try again.";
-                            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Dialog", JOptionPane.ERROR_MESSAGE);
                         }
                         return null;
                     }
@@ -411,8 +390,8 @@ public class FDA extends javax.swing.JFrame {
         else
         {
             //show error message
-            String message = "\"The search fic link is not recognized,\"\n"
-                    + "please try again.";
+            String message = "The provided link does not appear to lead to a valid fandom.\n"
+                    + "Please try again.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -727,18 +706,6 @@ public class FDA extends javax.swing.JFrame {
                     + "please try again.";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void downloadTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void sortBetaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
 
     private void timerangeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
