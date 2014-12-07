@@ -1,4 +1,4 @@
-package fda.Scrapers;
+package fda.Graphics;
 
 import fda.Containers.Fanfic;
 import org.jfree.chart.ChartFactory;

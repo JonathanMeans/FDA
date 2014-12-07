@@ -7,7 +7,6 @@ package fda.Graphics;
 
 import fda.Containers.Fanfic;
 import fda.Scrapers.FandomScraper;
-import fda.Scrapers.FicChartFactory;
 import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;
