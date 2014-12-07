@@ -108,30 +108,34 @@ public class FandomScraper extends Scraper {
             currentPage++;
         } while (!datePassed && currentPage <= numPages);
 
-        Fanfic[] topFicArray = new Fanfic[topFicList.size() + 1 + ficList.size()];
+        //Concatenate the top fics with all those which didn't make the top
+        //Separated by 'null' so you can tell which is which
+        Fanfic[] totalFics = new Fanfic[topFicList.size() + 1 + ficList.size()];
         for (int i = 0; i < topFicList.size(); ++i) {
-            topFicArray[i] = topFicList.get(i);
+            totalFics[i] = topFicList.get(i);
         }
 
-        topFicArray[topFicList.size()] = null;
+        totalFics[topFicList.size()] = null;
 
         int i = topFicList.size() + 1;
 
         for (Fanfic fic : ficList) {
-            topFicArray[i] = fic;
+            totalFics[i] = fic;
             ++i;
         }
 
         dialog.dispose();
-        if (topFicArray[0] == null) {
+        if (totalFics[0] == null) {
             throw new IOException("Could not find any fanfics at the provided link. \n" +
                     "Please double check the provided link and try again. \n " +
                     "Additionally, there may be an update error on the site itself. \n" +
                     "In this case, wait half an hour and try again.");
         }
-        return topFicArray;
+        return totalFics;
     }
 
+    //Get the url after the given one in the fandom
+    //This is a bit too specific and will break if the user inputs a url that doesn't start at page 1
     private static String incrementPage(String url, int pageNumber) throws MalformedURLException {
         if (pageNumber == 1) {
             if (new URL(url).getQuery() == null) {
@@ -146,6 +150,7 @@ public class FandomScraper extends Scraper {
         return url.substring(0, url.length() - Integer.toString(pageNumber).length()) + Integer.toString(pageNumber + 1);
     }
 
+    //Read data into a Fanfic object
     private static Fanfic extractFicData(Element story) {
         Fanfic fic = new Fanfic();
         extractTitleData(story, fic);
@@ -181,7 +186,7 @@ public class FandomScraper extends Scraper {
         return fic;
     }
 
-        private static void extractTitleData(Element story, Fanfic fic) {
+    private static void extractTitleData(Element story, Fanfic fic) {
         Element titleElement = story.select("a").first();
         fic.setTitle(titleElement.text());
         fic.setFicUrl(BASE_URL + titleElement.attr("href"));
