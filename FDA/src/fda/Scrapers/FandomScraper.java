@@ -123,7 +123,7 @@ public class FandomScraper extends Scraper {
         }
 
         dialog.dispose();
-        if (topFicArray.length == 0) {
+        if (topFicArray[0] == null) {
             throw new IOException("Could not find any fanfics at the provided link. \n" +
                     "Please double check the provided link and try again. \n " +
                     "Additionally, there may be an update error on the site itself. \n" +
