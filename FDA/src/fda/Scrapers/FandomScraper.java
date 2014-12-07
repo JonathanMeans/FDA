@@ -80,7 +80,6 @@ public class FandomScraper extends Scraper {
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
-                System.out.println(fic);
 
                 if (fic.getAuthor().equals("HPFan")) {
                     continue;
@@ -102,7 +101,6 @@ public class FandomScraper extends Scraper {
             }
 
             url = incrementPage(url, currentPage);
-            System.out.println(url);
 
             //sometimes there's a timeout error, so loop here
             doc = null;
