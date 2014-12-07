@@ -1,5 +1,8 @@
-package fda;
+package fda.Scrapers;
 
+import fda.Containers.BoundedSortedFics;
+import fda.Containers.Fanfic;
+import fda.Graphics.ProgressDialog;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

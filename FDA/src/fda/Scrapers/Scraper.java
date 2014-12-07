@@ -1,5 +1,6 @@
-package fda;
+package fda.Scrapers;
 
+import fda.Containers.Fanfic;
 import org.jsoup.nodes.Element;
 import java.util.*;
 

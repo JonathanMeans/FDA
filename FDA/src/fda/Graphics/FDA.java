@@ -4,9 +4,10 @@
  * Users:Yuwen Huang, Paul Corter
  * 
  */
-package fda;
+package fda.Graphics;
 
-import org.jfree.chart.demo.BarChartDemo1;
+import fda.Containers.Beta;
+import fda.Scrapers.BetaScraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -20,8 +21,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.*;
-
-import java.lang.NumberFormatException;
 
 public class FDA extends javax.swing.JFrame {
 	private static final Logger logger = Logger.getLogger(FDA.class.getName());

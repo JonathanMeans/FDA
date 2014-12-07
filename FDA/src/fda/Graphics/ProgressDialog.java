@@ -1,4 +1,4 @@
-package fda;
+package fda.Graphics;
 
 import javax.swing.*;
 
