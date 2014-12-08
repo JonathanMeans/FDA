@@ -1,5 +1,6 @@
-package fda;
+package fda.Graphics;
 
+import fda.Containers.Fanfic;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

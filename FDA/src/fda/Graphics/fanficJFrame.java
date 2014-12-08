@@ -2,9 +2,11 @@
  * GUI for displaying the results of a fandom search.
  * Authors: Yuwen Huang, Jonathan Means
  */
-package fda;
+package fda.Graphics;
 
 
+import fda.Containers.Fanfic;
+import fda.Scrapers.FandomScraper;
 import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;

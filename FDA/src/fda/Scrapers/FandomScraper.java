@@ -1,5 +1,8 @@
-package fda;
+package fda.Scrapers;
 
+import fda.Containers.BoundedSortedFics;
+import fda.Containers.Fanfic;
+import fda.Graphics.ProgressDialog;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -38,7 +42,15 @@ public class FandomScraper extends Scraper {
         long siteOriginTimeStamp = siteOriginDate.getTime();
 
         ProgressDialog dialog = new ProgressDialog();
-        Document doc = Jsoup.connect(url).get();
+        Document doc;
+
+        //make sure connection exists
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch ( UnknownHostException e) {
+            dialog.dispose();
+            throw new IOException("Unable to connect to Internet. Please try again.");
+        }
         int numPages = countPages(doc);
         int currentPage = 1;
 
@@ -49,9 +61,8 @@ public class FandomScraper extends Scraper {
         BoundedSortedFics topFicList = new BoundedSortedFics(numTopFics);
 
         long startTimeStamp = new Date().getTime();
-
-
         long endTimeStamp;
+
         if (days == Integer.MAX_VALUE) {
             endTimeStamp = siteOriginTimeStamp; //technically, no, but it'll work all the same
         } else {
@@ -69,6 +80,10 @@ public class FandomScraper extends Scraper {
             Elements stories = doc.select("div.z-list.zhover.zpointer");
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
+
+                if (fic.getAuthor().equals("HPFan")) {
+                    continue;
+                }
 
                 int progressValue = (int) (100 * (startTimeStamp - fic.getUpdatedDate().getTime())
                         / (startTimeStamp - endTimeStamp));
@@ -99,24 +114,34 @@ public class FandomScraper extends Scraper {
             currentPage++;
         } while (!datePassed && currentPage <= numPages);
 
-        Fanfic[] topFicArray = new Fanfic[topFicList.size() + 1 + ficList.size()];
+        //Concatenate the top fics with all those which didn't make the top
+        //Separated by 'null' so you can tell which is which
+        Fanfic[] totalFics = new Fanfic[topFicList.size() + 1 + ficList.size()];
         for (int i = 0; i < topFicList.size(); ++i) {
-            topFicArray[i] = topFicList.get(i);
+            totalFics[i] = topFicList.get(i);
         }
 
-        topFicArray[topFicList.size()] = null;
+        totalFics[topFicList.size()] = null;
 
         int i = topFicList.size() + 1;
 
         for (Fanfic fic : ficList) {
-            topFicArray[i] = fic;
+            totalFics[i] = fic;
             ++i;
         }
 
         dialog.dispose();
-        return topFicArray;
+        if (totalFics[0] == null) {
+            throw new IOException("Could not find any fanfics at the provided link. \n" +
+                    "Please double check the provided link and try again. \n " +
+                    "Additionally, there may be an update error on the site itself. \n" +
+                    "In this case, wait half an hour and try again.");
+        }
+        return totalFics;
     }
 
+    //Get the url after the given one in the fandom
+    //This is a bit too specific and will break if the user inputs a url that doesn't start at page 1
     private static String incrementPage(String url, int pageNumber) throws MalformedURLException {
         if (pageNumber == 1) {
             if (new URL(url).getQuery() == null) {
@@ -131,17 +156,43 @@ public class FandomScraper extends Scraper {
         return url.substring(0, url.length() - Integer.toString(pageNumber).length()) + Integer.toString(pageNumber + 1);
     }
 
+    //Read data into a Fanfic object
     private static Fanfic extractFicData(Element story) {
         Fanfic fic = new Fanfic();
         extractTitleData(story, fic);
         extractAuthorData(story, fic);
         extractSummary(story, fic);
+
+        //This specific story has an ill-formed properties list
+        //Rather than try to mess with the scraper to try to figure out how to read
+        //an arbitrarily-ordered list, which is probably quite complicated,
+        //I'm hard-coding this in.
+        //The fic sucks, the author sucks, and nothing about it is ever likely to change.
+        if (fic.getFicUrl().equals("https://www.fanfiction.net/s/268931/1/What-s-in-a-name-I-m-not-sure")) {
+            fic.setRating("K");
+            fic.setLanguage("English");
+            String[] genreArray = {"Humor"};
+            fic.setGenres(genreArray);
+            fic.setChapters(3);
+            fic.setWords(3508);
+            fic.setReviews(27);
+            fic.setFavorites(4);
+            fic.setFollows(1);
+            String[] characterArray = {"Hermione G.", "George W."};
+            fic.setCharacters(characterArray);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2001, Calendar.APRIL, 29);
+            fic.setPublishedDate(calendar.getTime());
+            calendar.set(2001, Calendar.MAY, 15);
+            fic.setUpdatedDate(calendar.getTime());
+            return fic;
+        }
         extractMisc(story, fic);
         extractDates(story, fic);
         return fic;
     }
 
-        private static void extractTitleData(Element story, Fanfic fic) {
+    private static void extractTitleData(Element story, Fanfic fic) {
         Element titleElement = story.select("a").first();
         fic.setTitle(titleElement.text());
         fic.setFicUrl(BASE_URL + titleElement.attr("href"));
