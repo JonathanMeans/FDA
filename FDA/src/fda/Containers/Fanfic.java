@@ -19,6 +19,21 @@ public class Fanfic implements Comparable<Fanfic> {
     private int chapters;
     private int words;
     private int favorites;
+    private int reviews;
+    private int follows;
+    private Date publishedDate;
+    private Date updatedDate;
+    private String[] characters;
+    private String[][] pairings;
+    private double popularity;
+
+    public Fanfic() {
+        characters = new String[1];
+        characters[0] = "None";
+
+        genres = new String[1];
+        genres[0] = "None";
+    }
 
     public String getTitle() {
         return title;
@@ -94,21 +109,7 @@ public class Fanfic implements Comparable<Fanfic> {
 
     }
 
-    private int reviews;
-    private int follows;
-    private Date publishedDate;
-    private Date updatedDate;
-    private String[] characters;
-    private String[][] pairings;
-    private double popularity;
 
-    public Fanfic() {
-        characters = new String[1];
-        characters[0] = "None";
-
-        genres = new String[1];
-        genres[0] = "None";
-    }
 
     public void setPairings(String[][] pairings) {
         this.pairings = pairings;
