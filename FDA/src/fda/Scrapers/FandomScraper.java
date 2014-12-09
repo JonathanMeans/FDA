@@ -30,7 +30,7 @@ public class FandomScraper extends Scraper {
 
     //Master method
     //Return a semi-ordered array of fics, given a url and day-boundary
-    public static Fanfic[] extractFics(String url, int days) throws IOException {
+    public static List<Fanfic> extractFics(String url, int days) throws IOException {
 
         //Create Date to stand for creation of site
         //Using the deprecated Date(int, int, int) constructor gives me a year in 3989 or something
@@ -81,10 +81,6 @@ public class FandomScraper extends Scraper {
             for (Element story : stories) {
                 Fanfic fic = extractFicData(story);
 
-                if (fic.getAuthor().equals("HPFan")) {
-                    continue;
-                }
-
                 int progressValue = (int) (100 * (startTimeStamp - fic.getUpdatedDate().getTime())
                         / (startTimeStamp - endTimeStamp));
                 dialog.setValue(progressValue);
@@ -116,27 +112,28 @@ public class FandomScraper extends Scraper {
 
         //Concatenate the top fics with all those which didn't make the top
         //Separated by 'null' so you can tell which is which
-        Fanfic[] totalFics = new Fanfic[topFicList.size() + 1 + ficList.size()];
+        List<Fanfic> totalFics = new ArrayList<Fanfic>();
+
         for (int i = 0; i < topFicList.size(); ++i) {
-            totalFics[i] = topFicList.get(i);
+            totalFics.add(topFicList.get(i));
         }
 
-        totalFics[topFicList.size()] = null;
-
-        int i = topFicList.size() + 1;
+        totalFics.add(null);
 
         for (Fanfic fic : ficList) {
-            totalFics[i] = fic;
-            ++i;
+            totalFics.add(fic);
         }
 
         dialog.dispose();
-        if (totalFics[0] == null) {
+
+        //If there are no fics found, then there will just be the null Object in the list
+        if (totalFics.size() == 1) {
             throw new IOException("Could not find any fanfics at the provided link. \n" +
                     "Please double check the provided link and try again. \n " +
                     "Additionally, there may be an update error on the site itself. \n" +
                     "In this case, wait half an hour and try again.");
         }
+
         return totalFics;
     }
 

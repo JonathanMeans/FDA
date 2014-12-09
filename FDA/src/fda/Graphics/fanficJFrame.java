@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class fanficJFrame extends JFrame {
 
@@ -35,7 +36,7 @@ public class fanficJFrame extends JFrame {
         preference = FicChartFactory.Preference.READER;
         chartedAttribute = FicChartFactory.ChartedAttribute.CHARACTER;
 
-        Fanfic[] fics = FandomScraper.extractFics(url, numDays);
+        List<Fanfic> fics = FandomScraper.extractFics(url, numDays);
         final FicChartFactory chartFactory = new FicChartFactory(fics);
 
         JPanel graphPanel = new JPanel();

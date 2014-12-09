@@ -16,7 +16,7 @@ import java.util.*;
  * Author: Jonathan Means
  */
 public class FicChartFactory {
-    private Fanfic[] fics;
+    private List<Fanfic> fics;
 
     public enum Preference {WRITER, READER}
 
@@ -38,7 +38,7 @@ public class FicChartFactory {
     private JFreeChart writerPreferredWordsChart;
     private JFreeChart writerPreferredRatingChart;
 
-    public FicChartFactory(Fanfic[] fics) {
+    public FicChartFactory(List<Fanfic> fics) {
         this.fics = fics;
     }
 
