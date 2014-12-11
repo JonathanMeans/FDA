@@ -261,7 +261,7 @@ public class FDA extends javax.swing.JFrame {
 
         betalinkLabel.setText("Fic URL:");
 
-        sortBetaTextField.setText("https://www.fanfiction.net/betareaders/all/book/");
+        sortBetaTextField.setText("");
         sortBetaTextField.setSelectionEnd(45);
         sortBetaTextField.setSelectionStart(45);
 
